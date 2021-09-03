@@ -1,23 +1,65 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Profile from '../views/Profile.vue'
+import Reports from '../views/Reports.vue'
+import Message from '../views/Message.vue'
+import Faq from '../views/FAQ.vue'
+import Table from '../views/Table.vue'
+import Dashboard from '../views/Dashboard.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    children:[
+      {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile
+      },
+      {
+        path: '/',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: '/reports',
+        name: 'Reports',
+        component: Reports
+      },
+      {
+        path: '/message',
+        name: 'Message',
+        component: Message
+      },
+      {
+        path: '/faq',
+        name: 'Faq',
+        component: Faq
+      },
+      {
+        path: '/table',
+        name: 'Table',
+        component: Table
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({
