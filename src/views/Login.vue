@@ -14,14 +14,19 @@
                                         <div class="text-center">
                                             <h4 class="text-dark mb-4">Welcome</h4>
                                         </div>
-                                        <form class="user">
-                                            <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div>
-                                            <div class="form-group"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
+                                        <form class="user" @submit="login">
+                                            <div class="form-group">
+                                                <input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" v-model="email"></div>
+                                            <div class="form-group">
+                                                <input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password" v-model="password">
+                                            </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
                                                     <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
                                                 </div>
-                                            </div><router-link to="dashboard" class="btn btn-primary btn-block text-white btn-user" type="submit">Login</router-link>
+                                            </div>
+                                            <!-- <router-link to="dashboard" class="btn btn-primary btn-block text-white btn-user" type="submit">Login</router-link> -->
+                                            <input type="submit" value="Login" class="btn btn-primary btn-block text-white btn-user">
                                             <hr>
                                             <hr>
                                         </form>
@@ -39,12 +44,41 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    import router from '../router'
+    import {mapGetters, mapActions} from 'vuex';
     export default {
         name:"Login" ,
         data(){
             return{
-                image: require('@/assets/img/cso.jpg')
+                image: require('@/assets/img/cso.jpg'),
+                email:'',
+                password:''
             }
+        },
+        computed: mapGetters(['allUsers']),
+        methods: {
+            ...mapActions(['fetchUsers']),
+            login(e){
+            e.preventDefault();
+            // let email = this.email;
+            // let password = this.password;
+            // const data = {
+            //     email,
+            //     password
+            // }
+            axios.get("https://jsonplaceholder.typicode.com/users/1")
+                .then(res=>{
+                    // console.log(res.data.email == this.email);
+                    // router.push("/dashboard")
+                    if(res.data.email == this.email){
+                         router.push("/dashboard")   
+                    }else {
+                        alert('Invalid Credentials');
+                    }
+                })
+                .catch((err)=>{alert('Invalid Credentials'); console.log(err)});
+        }
         }
     }
 </script>
