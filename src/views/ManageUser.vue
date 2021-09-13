@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="mb-3">
-            <router-link to="" class="btn btn-primary">Add Student</router-link>
+            <router-link to="register" class="btn btn-primary">Add User</router-link>
         </div>
          <div class="card shadow">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 font-weight-bold">Student Info</p>
+                        <p class="text-primary m-0 font-weight-bold">Officer Info</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -21,71 +21,29 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>School</th>
                                         <th>Address</th>
                                         <th>Mobile Number</th>
+                                        <th>User Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Airi Satou</td>
-                                        <td>USTP</td>
                                         <td>Carmen</td>
                                         <td>09123456789</td>
+                                        <td>Admin</td>
                                     </tr>
                                     <tr>
                                         <td>Angelica Ramos</td>
-                                        <td>USTP<br></td>
                                         <td>Gusa</td>
                                         <td>09123456789<br></td>
+                                        <td>User</td>
                                     </tr>
                                     <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>USTP<br></td>
-                                        <td>Gusa</td>
+                                        <td>John Ramos</td>
+                                        <td>Carmen</td>
                                         <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bradley Greer</td>
-                                        <td>USTP<br></td>
-                                        <td>Bulua</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brenden Wagner</td>
-                                        <td>COC</td>
-                                        <td>Patag</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brielle Williamson</td>
-                                        <td>XU</td>
-                                        <td>Nazareth</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bruno Nash<br></td>
-                                        <td>COC</td>
-                                        <td>Balulang</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Caesar Vance</td>
-                                        <td>XU</td>
-                                        <td>Lapasan</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cara Stevens</td>
-                                        <td>COC</td>
-                                        <td>Lapasan</td>
-                                        <td>09123456789<br></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td>COC</td>
-                                        <td>Bugo</td>
-                                        <td>09123456789<br></td>
+                                        <td>User</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>

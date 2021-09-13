@@ -9,6 +9,7 @@ import Table from '../views/Table.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import ManageUser from '../views/ManageUser.vue'
 
 Vue.use(VueRouter)
 
@@ -17,11 +18,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register
   },
   {
     path: '/dashboard',
@@ -57,7 +53,17 @@ const routes = [
         path: '/table',
         name: 'Table',
         component: Table
-      }
+      },
+      {
+        path: '/manageusers',
+        name: 'ManageUsers',
+        component: ManageUser
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
+      },
     ]
   },
 ]

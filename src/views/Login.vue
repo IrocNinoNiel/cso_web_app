@@ -16,7 +16,7 @@
                                         </div>
                                         <form class="user" @submit="login">
                                             <div class="form-group">
-                                                <input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" v-model="email"></div>
+                                                <input class="form-control form-control-user" type="text" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Username..." name="email" v-model="email"></div>
                                             <div class="form-group">
                                                 <input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password" v-model="password">
                                             </div>
@@ -30,8 +30,8 @@
                                             <hr>
                                             <hr>
                                         </form>
-                                        <div class="text-center"><router-link to="login" class="small" href="forgot-password.html">Forgot Password?</router-link></div>
-                                        <div class="text-center"><router-link to="register" class="small">Create an Account!</router-link></div>
+                                        <!-- <div class="text-center"><router-link to="login" class="small" href="forgot-password.html">Forgot Password?</router-link></div> -->
+                                        <!-- <div class="text-center"><router-link to="register" class="small">Create an Account!</router-link></div> -->
                                     </div>
                                 </div>
                             </div>
@@ -46,6 +46,7 @@
 <script>
     import axios from 'axios';
     import router from '../router'
+    import VueCookies from 'vue-cookies'
     import {mapGetters, mapActions} from 'vuex';
     export default {
         name:"Login" ,
@@ -56,30 +57,49 @@
                 password:''
             }
         },
-        computed: mapGetters(['allUsers']),
         methods: {
-            ...mapActions(['fetchUsers']),
-            login(e){
-            e.preventDefault();
-            // let email = this.email;
-            // let password = this.password;
-            // const data = {
-            //     email,
-            //     password
-            // }
-            axios.get("https://jsonplaceholder.typicode.com/users/1")
-                .then(res=>{
-                    // console.log(res.data.email == this.email);
-                    // router.push("/dashboard")
-                    if(res.data.email == this.email){
-                         router.push("/dashboard")   
-                    }else {
-                        alert('Invalid Credentials');
-                    }
-                })
-                .catch((err)=>{alert('Invalid Credentials'); console.log(err)});
-        }
-        }
+            ...mapActions(['getUser']),
+           login(e){    
+                e.preventDefault()    
+                let email = this.email
+                let password = this.password  
+                let login = () => {    
+                    let data = {    
+                        username: email,    
+                        password: password    
+                    } 
+                    axios.post("api/users/login-user", data)    
+                        .then((response) => {    
+                            // console.log("Logged in")    
+                            console.log(response.data)
+                            VueCookies.set('Token' , response.data.token, "1h") 
+                            this.getUser(response.data);
+                            router.push("/dashboard")    
+                        })    
+                        .catch((errors) => {    
+                            console.log(errors);
+                            alert('Invalid Credentials')
+                        })    
+                }    
+                login()    
+            },
+            getUserData: function() {  
+                let self = this    
+                axios.get("/api/users/dashboard", {headers:{
+                  Authorization: VueCookies.get('Token')
+                }})    
+                    .then((response) => {     
+                        this.getUser(response.data);
+                        router.push("/dashboard")    
+                    })    
+                    .catch((errors) => {    
+                        console.log(errors)       
+                    })    
+            },
+        },
+        mounted() {     
+            this.getUserData()    
+        } 
     }
 </script>
 

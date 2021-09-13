@@ -10,7 +10,10 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item" role="presentation"><router-link to="/dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></router-link></li>
+                <li class="nav-item" role="presentation"><router-link to="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></router-link></li>
+                 <li class="nav-item" role="presentation" v-show="this.userData.user_role == 'admin'">
+                    <router-link to="/manageusers" class="nav-link"><i class="fas fa-users"></i><span>Manage User</span></router-link>
+                </li>
                 <li class="nav-item" role="presentation">
                     <router-link to="/profile" class="nav-link"><i class="fas fa-user"></i><span>Edit Profile</span></router-link>
                     <router-link to="/message" class="nav-link"><i class="icon ion-android-mail"></i><span>Messages</span></router-link>
@@ -19,7 +22,7 @@
                     <router-link to="table" class="nav-link"><i class="fas fa-bars"></i><span>Student Records</span></router-link>
                     <router-link to="reports" class="nav-link"><i class="icon ion-arrow-graph-up-right"></i><span>Reports</span></router-link>
                     <router-link to="faq" class="nav-link"><i class="fas fa-question-circle"></i><span>Edit FAQ's</span></router-link>
-                    <router-link to="login" class="nav-link"><i class="fas fa-arrow-left"></i><span>Log Out</span></router-link>
+                    <a class="nav-link" v-on:click="logout"><i class="fas fa-arrow-left"></i><span>Log Out</span></a>
                 </li>
               <li class="nav-item" role="presentation"></li>
               <li class="nav-item" role="presentation"></li>
@@ -46,12 +49,51 @@
 </template>
 
 <script>
-import $ from 'jquery';
+import $ from 'jquery';   
+import VueCookies from 'vue-cookies'
+import axios from "axios";
+import router from "../router"  
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'App',
+   data() {    
+            return {    
+                user: {    
+                    name:"Jesse",
+                    type:1
+                }   
+            }    
+        }, 
+    computed:mapGetters(['userData']),
+    methods: {    
+      ...mapActions(['getUserData','deleteUserData']), 
+            getUserData1: function() {  
+              // console.log(VueCookies.get('Token'))  
+                let self = this    
+                axios.get("/api/users/dashboard", {headers:{
+                  Authorization: VueCookies.get('Token')
+                }})    
+                    .then((response) => {    
+                        this.getUserData(VueCookies.get('Token'));
+                        // self.$set(this, "user", response.data.user)    
+                    })    
+                    .catch((errors) => {    
+                        console.log(errors)    
+                        router.push("/login")    
+                    })    
+            },
+            logout: function (e) {
+                if(confirm('Are you sure?')){
+                  this.deleteUserData();
+                  VueCookies.remove('Token')
+                  router.push("/login")
+                }
+            }    
+        },   
   mounted () {
     // Toggle the side navigation
+    this.getUserData1()  
   $("#sidebarToggle, #sidebarToggleTop").on('click', function() {
     $("body").toggleClass("sidebar-toggled");
     $(".sidebar").toggleClass("toggled");
