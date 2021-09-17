@@ -12,6 +12,8 @@ import Register from '../views/Register.vue'
 import ManageUser from '../views/ManageUser.vue'
 import AddStudent from '../views/AddStudent.vue'
 import EditStudent from '../views/EditStudent.vue'
+import AddFaq from '../views/AddFaq.vue'
+import EditFaq from '../views/EditFaq.vue'
 
 Vue.use(VueRouter)
 
@@ -75,7 +77,18 @@ const routes = [
         path: '/editstudent/:id',
         name: 'EditStudent',
         component: EditStudent
-      }
+      },
+      {
+        path: '/addfaq',
+        name: 'AddFaq',
+        component: AddFaq
+      },
+      {
+        path: '/editfaq/:id',
+        name: 'EditFaq',
+        component: EditFaq
+      },
+
     ]
   },
 ]
