@@ -45,7 +45,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input class="form-control form-control-user" type="text" id="empid" aria-describedby="ID" placeholder="Employee ID Number" name="emp_ID" v-model="user.empId" :class="[error.empId ? errorClass : '']">
+                                        <input class="form-control form-control-user" type="text" id="empid" aria-describedby="ID" placeholder="Employee ID Number" name="emp_ID" v-model="user.employee_id" :class="[error.empId ? errorClass : '']">
                                     </div>
 
                                      <div class="form-group row">
@@ -53,7 +53,7 @@
                                             <input class="form-control form-control-user" type="text" id="username" placeholder="Username" name="user_name" v-model="user.username" :class="[error.username ? errorClass : '']">
                                         </div>
                                         <div class="col-sm-6">
-                                            <input class="form-control form-control-user" type="text" id="phonenumber" placeholder="Phone Number" name="phone_number" v-model="user.contact" :class="[error.contact ? errorClass : '']">
+                                            <input class="form-control form-control-user" type="text" id="phonenumber" placeholder="Phone Number" name="phone_number" v-model="user.phone_num" :class="[error.contact ? errorClass : '']">
                                         </div>
                                     </div>
 
@@ -68,7 +68,7 @@
 
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <select class="form-control rounded-pill" id="usertype" v-model="user.userType" :class="[error.userType ? errorClass : '']">
+                                            <select class="form-control rounded-pill" id="usertype" v-model="user.user_role" :class="[error.userType ? errorClass : '']">
                                                 <option value="">User Type</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="user">User</option>
@@ -102,13 +102,13 @@
                     email: "",
                     position: "",
                     gender: "",
-                    userType: "",
+                    user_role: "",
                     address: "",
-                    contact: "",
+                    phone_num: "",
                     username: "",
                     password: "",
                     password2: "",
-                    empId: ""
+                    employee_id: ""
                 },  
                 error:{
                     first_name:false,
@@ -145,13 +145,13 @@
                 this.user.email == "" ? (this.error.email = true, this.hasNoError = false): this.error.email = false;
                 this.user.position == "" ? (this.error.position = true, this.hasNoError = false): this.error.position = false;
                 this.user.gender == "" ? (this.error.gender = true, this.hasNoError = false): this.error.gender = false;
-                this.user.userType == "" ? (this.error.userType = true, this.hasNoError = false): this.error.userType = false;
+                this.user.user_role == "" ? (this.error.userType = true, this.hasNoError = false): this.error.userType = false;
                 this.user.address == "" ? (this.error.address = true, this.hasNoError = false): this.error.address = false;
-                this.user.contact == "" ? (this.error.contact = true, this.hasNoError = false): this.error.contact = false;
+                this.user.phone_num == "" ? (this.error.contact = true, this.hasNoError = false): this.error.contact = false;
                 this.user.username == "" ? (this.error.username = true, this.hasNoError = false): this.error.username = false;
                 this.user.password == "" ? (this.error.password = true, this.hasNoError = false): this.error.password = false;
                 this.user.password2 == "" ? (this.error.password2 = true, this.hasNoError = false): this.error.password2 = false;
-                this.user.empId == "" ? (this.error.empId = true, this.hasNoError = false): this.error.empId = false;
+                this.user.employee_id == "" ? (this.error.empId = true, this.hasNoError = false): this.error.empId = false;
                 
                
                 if(this.user.password != this.user.password2){
@@ -173,9 +173,7 @@
                 }else if(!this.passwordLength){
                     alert('Password Length must be more than 8 digit')
                 }else{
-                    const token = VueCookies.get('Token');
-                    console.log(token);
-                    this.registerNewUser(this.user,token);
+                    this.registerNewUser(this.user);
 
                 }
 

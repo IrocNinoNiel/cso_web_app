@@ -70,8 +70,6 @@
                     } 
                     axios.post("api/users/login-user", data)    
                         .then((response) => {    
-                            // console.log("Logged in")    
-                            console.log(response.data)
                             VueCookies.set('Token' , response.data.token, "1h") 
                             this.getUser(response.data);
                             router.push("/dashboard")    

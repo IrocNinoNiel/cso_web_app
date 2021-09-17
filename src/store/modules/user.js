@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from '../../router';
+import VueCookies from 'vue-cookies'
 
 const state = {
     users: [],
@@ -32,9 +33,10 @@ const actions = {
     async deleteUserData({commit}){
         commit('removeData',{}) 
     },
-    async registerNewUser({commit}, data, token){
-        // const response = await axios.post('/api/users//register-user',{data}, {headers:{authorization: token}});
-        axios.post('/api/users//register-user', {data}, {headers:{authorization: token}})
+    async registerNewUser({commit}, data){
+        const response = await axios.post('/api/users//register-user',{data}, {headers:{authorization: token}});
+        const token = VueCookies.get('Token');
+        axios.post('/api/users/register-user', {data}, {headers:{authorization: token}})
             .then((response) => {    
                 console.log(response);
                 commit('registerUser',response.data);  
@@ -63,11 +65,11 @@ const mutations = {
         alert('Register Succesfully')
         router.push('/manageusers');
     },
-    // errorRegister:(state,data)=>{
-    //     console.log(data)
-    //     state.errMsg = data.message
-    //     state.hasRegisterError = true
-    // }
+    errorRegister:(state,data)=>{
+        console.log(data)
+        state.errMsg = data.message
+        state.hasRegisterError = true
+    }
 };
 
 

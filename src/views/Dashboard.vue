@@ -69,7 +69,7 @@ export default {
     methods: {    
       ...mapActions(['getUserData','deleteUserData']), 
             getUserData1: function() {  
-              // console.log(VueCookies.get('Token'))  
+              console.log(VueCookies.get('Token'))  
                 let self = this    
                 axios.get("/api/users/dashboard", {headers:{
                   Authorization: VueCookies.get('Token')

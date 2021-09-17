@@ -10,6 +10,8 @@ import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ManageUser from '../views/ManageUser.vue'
+import AddStudent from '../views/AddStudent.vue'
+import EditStudent from '../views/EditStudent.vue'
 
 Vue.use(VueRouter)
 
@@ -64,6 +66,16 @@ const routes = [
         name: 'Register',
         component: Register
       },
+      {
+        path: '/addstudent',
+        name: 'AddStudent',
+        component: AddStudent
+      },
+      {
+        path: '/editstudent/:id',
+        name: 'EditStudent',
+        component: EditStudent
+      }
     ]
   },
 ]
