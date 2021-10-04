@@ -2,8 +2,13 @@
     <div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold">Messages</p><button class="btn btn-primary" type="button" style="margin-top: 0px;margin-right: 0px;margin-bottom: 0px;padding-top: 6px;padding-bottom: 6px;padding-left: 12px;">Chat Bot messages</button><button class="btn btn-primary"
-                    type="button" style="margin: 10px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;padding-top: 6px;padding-bottom: 6px;padding-left: 12px;">Archived Messagees</button></div>
+                <p class="text-primary m-0 font-weight-bold">Messages</p>
+                
+                <button class="btn btn-primary" type="button" style="margin-top: 0px;margin-right: 0px;margin-bottom: 0px;padding-top: 6px;padding-bottom: 6px;padding-left: 12px;">Chat Bot messages</button>
+            
+                <router-link to="/archivedmessage" class="btn btn-primary"
+                    type="button" style="margin: 10px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;padding-top: 6px;padding-bottom: 6px;padding-left: 12px;">Archived Messagees</router-link>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 text-nowrap">

@@ -20,8 +20,10 @@ const getters = {
 
 const actions = {
     async fetchUsers({ commit }){
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-        commit(response.data);
+        const token = VueCookies.get('Token');
+        const response = await axios.get('/api/users/show', {headers:{Authorization: token}})
+        // console.log(response.data.users);
+        commit('getAllUsers',response.data.users);
     },
     async getUser({ commit }, data){
         commit('getOne', data)
@@ -34,7 +36,7 @@ const actions = {
         commit('removeData',{}) 
     },
     async registerNewUser({commit}, data){
-        const response = await axios.post('/api/users//register-user',{data}, {headers:{authorization: token}});
+        // const response = await axios.post('/api/users//register-user',{data}, {headers:{authorization: token}});
         const token = VueCookies.get('Token');
         axios.post('/api/users/register-user', {data}, {headers:{authorization: token}})
             .then((response) => {    
@@ -53,6 +55,9 @@ const actions = {
 const mutations = {
     getOne:(state,data)=>{
         state.user = data;
+    },
+    getAllUsers:(state,data)=>{
+        state.users = data;
     },
     getData:(state,data)=>{
         state.datauser = data;

@@ -1,5 +1,5 @@
 export const planetChartData = {
-    type: "line",
+    type: "bar",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug"],
       datasets: [

@@ -14,6 +14,7 @@ import AddStudent from '../views/AddStudent.vue'
 import EditStudent from '../views/EditStudent.vue'
 import AddFaq from '../views/AddFaq.vue'
 import EditFaq from '../views/EditFaq.vue'
+import ArchivedMessage from '../views/ArchivedMessage.vue'
 
 Vue.use(VueRouter)
 
@@ -88,6 +89,11 @@ const routes = [
         name: 'EditFaq',
         component: EditFaq
       },
+      {
+        path: '/archivedmessage',
+        name: 'ArchivedMessage',
+        component: ArchivedMessage
+      }
 
     ]
   },

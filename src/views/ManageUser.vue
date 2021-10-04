@@ -27,23 +27,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Airi Satou</td>
-                                        <td>Carmen</td>
-                                        <td>09123456789</td>
-                                        <td>Admin</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Angelica Ramos</td>
-                                        <td>Gusa</td>
-                                        <td>09123456789<br></td>
-                                        <td>User</td>
-                                    </tr>
-                                    <tr>
-                                        <td>John Ramos</td>
-                                        <td>Carmen</td>
-                                        <td>09123456789<br></td>
-                                        <td>User</td>
+                                    <tr v-for="user in allUsers" :key="user._id">
+                                        <td>{{user.first_name}} {{user.last_name}}</td>
+                                        <td>{{user.address}}</td>
+                                        <td>{{user.phone_num}}</td>
+                                        <td>{{user.user_role}}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -73,8 +61,18 @@
 </template>
 
 <script>
+
+import {mapActions, mapGetters} from 'vuex';
 export default {
-    name:'Table'
+    name:'ManageUser',
+    computed:mapGetters(['allUsers']),
+    methods: {
+         ...mapActions(['fetchUsers']), 
+    },
+     mounted() {
+        this.fetchUsers();
+        console.log(this.allUsers);
+    }
 }
 </script>
 

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import student from './modules/student'
 import faq from './modules/faq'
+import query from './modules/query'
 
 Vue.use(Vuex)
 
@@ -10,6 +11,7 @@ export default new Vuex.Store({
   modules: {
     user,
     student,
-    faq
+    faq,
+    query
   }
 })

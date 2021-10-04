@@ -15,7 +15,7 @@
                     <router-link to="/manageusers" class="nav-link"><i class="fas fa-users"></i><span>Manage User</span></router-link>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <router-link to="/profile" class="nav-link"><i class="fas fa-user"></i><span>Edit Profile</span></router-link>
+                    <router-link to="/profile" class="nav-link"><i class="fas fa-user"></i><span>Profile</span></router-link>
                     <router-link to="/message" class="nav-link"><i class="icon ion-android-mail"></i><span>Messages</span></router-link>
                 </li>
                 <li class="nav-item" role="presentation">
