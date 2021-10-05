@@ -71,7 +71,6 @@ export default {
     },
      mounted() {
         this.fetchUsers();
-        console.log(this.allUsers);
     }
 }
 </script>
