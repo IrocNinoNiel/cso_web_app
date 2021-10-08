@@ -6,6 +6,9 @@ import store from './store';
 import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/fonts/fontawesome-all.min.css'
 import './assets/fonts/ionicons.min.css'
+import moment from 'moment'
+
+Vue.prototype.moment = moment
 
 Vue.use(router)
 
