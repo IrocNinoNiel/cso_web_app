@@ -31,7 +31,7 @@
                     officer_id:""
                 },
                 errorClass: 'border-danger',
-                hasNoError:true
+                hasNoError:true,
             }
         },
         methods: {

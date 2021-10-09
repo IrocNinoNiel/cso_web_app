@@ -21,7 +21,10 @@
                                             <button class="btn btn-danger" @click="deleteOneFaq(faq._id)"><i class="far fa-times-circle"></i></button>
                                         </div>
                                         <div class="ml-1">
-                                            <button class="btn btn-warning" @click="editOneFaq(faq._id)"><i class="fas fa-user-edit"></i></button>
+                                            <!-- <button class="btn btn-warning" @click="editOneFaq(faq._id)"><i class="fas fa-user-edit"></i></button> -->
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" @click="populateModalEdit(faq)">
+                                                <i class="fas fa-user-edit"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -31,7 +34,35 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit FAQ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="user" @submit="editFaq">
+                        <div class="form-group">
+                            <input class="form-control form-control-user" type="text" id="faq_title" placeholder="FAQ Title" name="faq_title" v-model="faq.faq_title" :class="[error.faq_title ? errorClass : '']">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" type="text" id="faq_answer" placeholder="FAQ Answer" name="faq_answer" v-model="faq.faq_answer" :class="[error.faq_answer ? errorClass : '']" rows="5"></textarea>
+                        </div>
+                        <input type="submit" value="Edit Faq " class="btn btn-primary btn-block text-white btn-user">
+                    </form>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    
 </template>
 
 <script>
@@ -40,16 +71,59 @@
     export default {
         name:"faqlist",
         computed:mapGetters(['allFaq']),
+        data(){
+            return{
+                faq:{
+                    faq_title:"",
+                    faq_answer:"",
+                    officer_id:""
+                },
+                error:{
+                    faq_title:"",
+                    faq_answer:"",
+                    officer_id:""
+                },
+                errorClass: 'border-danger',
+                hasNoError:true,
+                faqEditID:null
+            }
+        },
         methods: {
-            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq']), 
+            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq','editOneFaq']), 
             deleteOneFaq(id){
                 console.log(id)
                 if(confirm('Are you sure?')){
                     this.deleteFaq(id);
                 }
             },
-            editOneFaq(_id){
-                router.push({name:'EditFaq',params:{id:_id}})
+            // editOneFaq(_id){
+            //     router.push({name:'EditFaq',params:{id:_id}})
+            // },
+            editFaq(e){
+                e.preventDefault();
+
+                this.hasNoError = true;
+
+                this.faq.faq_title == "" ? (this.error.faq_title = true, this.hasNoError = false): this.error.faq_title = false;
+                this.faq.faq_answer == "" ? (this.error.faq_answer = true, this.hasNoError = false): this.error.faq_answer = false;
+
+                if(!this.hasNoError){
+                    alert('Please Input All Fields');
+                }else{
+                    // console.log(this.faqEditID);
+                    const data = {
+                        faq:this.faq,
+                        id:this.faqEditID
+                    };
+                    console.log(data.faq);
+                    this.editOneFaq(data);
+                }
+            },
+            populateModalEdit(faq){
+                this.faq.faq_title = faq.faq_title;
+                this.faq.faq_answer =faq.faq_answer;
+                this.faq.officer_id = faq.officer_id;
+                this.faqEditID = faq._id;
             }
         },
         mounted(){

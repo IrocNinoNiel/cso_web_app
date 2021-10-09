@@ -7,9 +7,20 @@ import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/fonts/fontawesome-all.min.css'
 import './assets/fonts/ionicons.min.css'
 import moment from 'moment'
+// // socket io
+// import * as io from "socket.io-client";
+// import VueSocketIO from "vue-socket.io";
+
+// Vue.use(
+//   new VueSocketIO({
+//     debug: true,
+//     connection: io('http://localhost:5000'), // options object is Optional
+//   })
+// );
+
+
 
 Vue.prototype.moment = moment
-
 Vue.use(router)
 
 new Vue({

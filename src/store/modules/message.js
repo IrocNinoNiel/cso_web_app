@@ -45,6 +45,9 @@ const mutations = {
     },
     loadingSMSMutate:(state,data)=>{
         state.loadingSMS = data;
+    },
+    SOCKET_MESSAGEFROMSTUDENT:(state,data)=>{
+        state.messages = data;
     }
 };
 

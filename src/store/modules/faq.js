@@ -1,6 +1,8 @@
 import axios from "axios";
 import router from '@/router'
+import Vue from 'vue';
 import VueCookies from 'vue-cookies'
+
 
 const state = {
     faqs:[],
@@ -51,19 +53,20 @@ const actions = {
                 alert(errors.response.data.message)
             }) 
     },
-    async editOneFaq({commit},data){
+    async editOneFaq({commit,dispatch},commitData){
 
         const token = VueCookies.get('Token');
-        const id = router.currentRoute.params.id
+        const data = commitData.faq;
+        const id = commitData.id;
 
         axios.put(`/api/FAQ/edit/${id}`,{data},{headers:{authorization: token}})
             .then((response)=> {
-                // console.log(response);
                 commit('editOneFaqMutate',response.data);
-                dispatch('getOneFaq',{id:id})
+                dispatch('getAllFaqs')
             })
             .catch((errors) => {    
-                // alert(errors.response.data.message)
+                console.log(errors);
+                alert(errors)
             }) 
     }
 };
@@ -84,8 +87,9 @@ const mutations = {
         state.faq = data;
     },
     editOneFaqMutate:(state,data)=>{
+        console.log(data);
         alert('Edited Succesfully')
-        router.push('/faq');
+        router.go(router.currentRoute);
     }
 };
 

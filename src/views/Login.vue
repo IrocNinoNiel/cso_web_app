@@ -72,7 +72,7 @@
                         .then((response) => {    
                             VueCookies.set('Token' , response.data.token, "1h") 
                             this.getUser(response.data);
-                            router.push("/dashboard")    
+                            router.push("/")    
                         })    
                         .catch((errors) => {    
                             console.log(errors);
@@ -88,7 +88,7 @@
                 }})    
                     .then((response) => {     
                         this.getUser(response.data);
-                        router.push("/dashboard")    
+                        router.push("/")    
                     })    
                     .catch((errors) => {    
                         console.log(errors)       

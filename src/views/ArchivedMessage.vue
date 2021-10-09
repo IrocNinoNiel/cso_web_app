@@ -125,6 +125,7 @@
     import {mapActions, mapGetters} from 'vuex';
     import { uuid } from 'vue-uuid';
     import Spinner from 'vue-simple-spinner';
+    import io from 'socket.io-client';
 
     export default {
         name:"ArchivedMessage",
@@ -135,6 +136,7 @@
         data() {
             return {
                 studentList:[],
+                socket: io(),
                 studentMessageList:[],
                 isActive: null,
                 data:{
