@@ -10,7 +10,7 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item" role="presentation"><router-link to="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></router-link></li>
+                <li class="nav-item" role="presentation"><router-link to="/" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></router-link></li>
                  <li class="nav-item" role="presentation" v-show="this.userData.user_role == 'admin'">
                     <router-link to="/manageusers" class="nav-link"><i class="fas fa-users"></i><span>Manage User</span></router-link>
                 </li>

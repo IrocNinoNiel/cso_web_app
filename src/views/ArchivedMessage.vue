@@ -125,7 +125,17 @@
     import {mapActions, mapGetters} from 'vuex';
     import { uuid } from 'vue-uuid';
     import Spinner from 'vue-simple-spinner';
-    import io from 'socket.io-client';
+
+    import io from "socket.io-client";
+
+    var connectionOptions =  {
+                "force new connection" : true,
+                "reconnectionAttempts": "Infinity", 
+                "timeout" : 10000,                  
+                "transports" : ["websocket"]
+            };
+
+    var socket = io.connect("http://localhost:5000",connectionOptions);
 
     export default {
         name:"ArchivedMessage",
@@ -146,6 +156,7 @@
                 },
                 uuid: uuid.v1(),
                 afterSend:false,
+                fillData: 0,
             }
         },
         methods: {
@@ -183,7 +194,20 @@
             },
             activate() {
                 setTimeout(() => this.scrollToEnd(), 500);
-            }
+            },
+            getRealtimeData() {
+                socket.on("newdata", fetchedData => {
+                    this.fillData += 1
+                    console.log(fetchedData);
+                    this.studentMessageList = [];
+                    fetchedData.forEach(element => {
+                        if(element.student_phone == this.isActive){
+                            this.studentMessageList.push(element);
+                        }
+                    })
+                    this.afterSend = false;
+                })
+            },
         },
         mounted() {
             this.getAllMessage();
@@ -209,7 +233,10 @@
             this.isActive = this.studentList[0];
             this.activate();
 
-        }
+        },
+        created() {
+            this.getRealtimeData()
+        },
     }
 </script>
 
