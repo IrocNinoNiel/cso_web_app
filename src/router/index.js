@@ -15,6 +15,7 @@ import EditStudent from '../views/EditStudent.vue'
 import AddFaq from '../views/AddFaq.vue'
 import EditFaq from '../views/EditFaq.vue'
 import ArchivedMessage from '../views/ArchivedMessage.vue'
+import Category from '../views/CategoryPage.vue';
 
 Vue.use(VueRouter)
 
@@ -93,6 +94,11 @@ const routes = [
         path: '/archivedmessage',
         name: 'ArchivedMessage',
         component: ArchivedMessage
+      },
+      {
+        path: '/category',
+        name: 'Category',
+        component: Category
       }
 
     ]

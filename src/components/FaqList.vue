@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Edit Modal -->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

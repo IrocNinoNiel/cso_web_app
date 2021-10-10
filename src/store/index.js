@@ -5,6 +5,7 @@ import student from './modules/student'
 import faq from './modules/faq'
 import query from './modules/query'
 import message from './modules/message'
+import category from './modules/category'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     student,
     faq,
     query,
-    message
+    message,
+    category
   }
 })
