@@ -74,6 +74,7 @@ const actions = {
 const mutations = {
     getAllFAQMutate:(state,data)=>{
         state.faqs = data
+        console.log(state.faqs);
     },
     addNewFaqMutate:(state,data)=>{
         alert('FAQ added Succesfully')

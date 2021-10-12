@@ -13,7 +13,19 @@
                                     <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
                                 </div>
                                 <div class="collapse" :id=faq._id>
+                                    <div class="card card-body mb-2">
+                                        <b>Category: </b>{{faq.category.category_name}}
+                                    </div>
+                                    <hr>
+                                    <b>Utterances</b>
+                                    <div v-for="utterance in faq.faq_utterances" :key="utterance._id">
+                                        <div class="card card-body mb-2">
+                                            {{utterance}}
+                                        </div>
+                                    </div>
+                                    <hr>
                                     <div class="card card-body">
+                                        <b>Answer: </b>
                                         {{faq.faq_answer}}
                                     </div>
                                     <div class="row ml-1 mt-2">
@@ -50,6 +62,29 @@
                             <input class="form-control form-control-user" type="text" id="faq_title" placeholder="FAQ Title" name="faq_title" v-model="faq.faq_title" :class="[error.faq_title ? errorClass : '']">
                         </div>
                         <div class="form-group">
+                            <select class="form-control " id="faq_category" v-model="faq.category_id" :class="[error.category_id ? errorClass : '']">
+                                <option :value="category._id" v-for="category in allCategories" :key="category._id">{{category.category_name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                                <button class="btn btn-outline-primary" type="button" @click="addUtterances">Add Utterances</button>
+                                <p class="text-danger" v-if="noUtternaces">Please Add Utterances</p>
+                                <p class="text-danger" v-if="hasEmptyUtternaces">Empty Utterances</p>
+                        </div>
+                        <div class="form-group">
+                            <div v-for="(utterances, index) in faq.faq_utterances" :key="index">
+                                {{utterances.value}}
+                                <div class="row m-2">
+                                    <div class="col col-8">
+                                        <input v-model="faq.faq_utterances[index]" class="form-control form-control-user" type="text">
+                                    </div>
+                                    <div class="col">
+                                        <button @click="deleteUtterances(index)" class="btn btn-outline-danger" type="button"><i class="far fa-times-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <textarea class="form-control" type="text" id="faq_answer" placeholder="FAQ Answer" name="faq_answer" v-model="faq.faq_answer" :class="[error.faq_answer ? errorClass : '']" rows="5"></textarea>
                         </div>
                         <input type="submit" value="Edit Faq " class="btn btn-primary btn-block text-white btn-user">
@@ -70,26 +105,32 @@
     import router from "../router"  
     export default {
         name:"faqlist",
-        computed:mapGetters(['allFaq']),
+        computed:mapGetters(['allFaq','allCategories']),
         data(){
             return{
                 faq:{
                     faq_title:"",
                     faq_answer:"",
-                    officer_id:""
+                    officer_id:"",
+                    category_id:"",
+                    faq_utterances:[]
                 },
                 error:{
                     faq_title:"",
                     faq_answer:"",
-                    officer_id:""
+                    officer_id:"",
+                    category_id:"",
+                    faq_utterances:[]
                 },
                 errorClass: 'border-danger',
                 hasNoError:true,
+                noUtternaces:false,
+                hasEmptyUtternaces:false,
                 faqEditID:null
             }
         },
         methods: {
-            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq','editOneFaq']), 
+            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq','editOneFaq','getAllCategory']), 
             deleteOneFaq(id){
                 console.log(id)
                 if(confirm('Are you sure?')){
@@ -103,9 +144,20 @@
                 e.preventDefault();
 
                 this.hasNoError = true;
+                this.hasEmptyUtternaces = false;
 
                 this.faq.faq_title == "" ? (this.error.faq_title = true, this.hasNoError = false): this.error.faq_title = false;
                 this.faq.faq_answer == "" ? (this.error.faq_answer = true, this.hasNoError = false): this.error.faq_answer = false;
+                this.faq.category_id == "" ? (this.error.category_id = true, this.hasNoError = false): this.error.category_id = false;
+
+                this.faq.faq_utterances.length < 1 ? (this.noUtternaces = true, this.hasNoError = false): this.noUtternaces = false;
+
+                this.faq.faq_utterances.forEach(element => {
+                    if(element.value == ""){
+                        this.hasEmptyUtternaces = true;
+                        this.hasNoError = false
+                    }
+                });
 
                 if(!this.hasNoError){
                     alert('Please Input All Fields');
@@ -124,10 +176,19 @@
                 this.faq.faq_answer =faq.faq_answer;
                 this.faq.officer_id = faq.officer_id;
                 this.faqEditID = faq._id;
+                this.faq.faq_utterances = faq.faq_utterances;
+                this.faq.category_id = faq.category_id;
+            },
+            addUtterances: function(){
+                this.faq.faq_utterances.push({ value: '' });
+            },
+            deleteUtterances: function(index){
+                this.faq.faq_utterances.splice(index,1);
             }
         },
         mounted(){
             this.getAllFaqs();
+            this.getAllCategory();
         }
     }
 </script>
