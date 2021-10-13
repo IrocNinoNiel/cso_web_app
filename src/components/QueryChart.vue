@@ -4,43 +4,58 @@
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Query Overview</h6>
-                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                        <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"
-                            role="menu">
-                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" role="presentation" href="#">&nbsp;Action</a><a class="dropdown-item" role="presentation" href="#">&nbsp;Another action</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="#">&nbsp;Something else here</a></div>
+
+                    <div class="queryButtonContainerClass mt-2">
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Events</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Scholarship</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Allowance</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Others</button>
+                    </div>
+
+                    <div class="dropdown no-arrow">
                     </div>
                 </div>
+                
                 <div class="card-body">
                     <canvas id="query-chart"></canvas>
                 </div>
             </div>
+        </div>
+        <div class="col">
+            <DashboardMessage/>
         </div>
     </div>
 </template>
 
 <script>
 
-
+    import DashboardMessage from './DashboardMessage.vue'
     export default {
         
         name:'QueryChart',
         props: ['allQueries'],
+        components:{DashboardMessage},
+        data() {
+            return {
+                randomNumber1:Math.floor((Math.random() * 20) + 1),
+                randomNumber2:Math.floor((Math.random() * 15) + 1),
+            }
+        },
         methods:{
             fillData () {
             const chartLabels = ["May", "Jun", "July", "Aug","Sep","Oct","Nov","Dec"]
-            const chartData = [0, 0, 0, 0, this.allQueries.length, 1, 0, 0]
+            const chartData = [0, 0, 0, this.randomNumber2, this.randomNumber1, 1, 0, 0]
 
                 this.queryData = {
-                    type: "bar",
+                    type: "line",
                     data: {
                     labels: chartLabels,
                     datasets: [
                         {
                         label: "Number of Queries",
                         data: chartData,
-                        backgroundColor: "rgba(54,73,93,.5)",
-                        borderColor: "#36495d",
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
                         borderWidth: 3
                         },
                     ]
@@ -61,6 +76,13 @@
                     }
                 }
               
+            },
+            btnChangeData(){
+                this.randomNumber1 = Math.floor((Math.random() * 20) + 1)
+                this.randomNumber2 = Math.floor((Math.random() * 15) + 1)
+                const ctx = document.getElementById('query-chart');
+                this.fillData();
+                new Chart(ctx, this.queryData);
             }
         },
         mounted() {
@@ -73,5 +95,9 @@
 </script>
 
 <style>
-
+.queryButtonContainerClass{
+    width: 400px;
+    display: flex;
+    overflow-x: auto;
+}
 </style>

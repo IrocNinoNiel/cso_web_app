@@ -19,7 +19,7 @@
                     <router-link to="/message" class="nav-link"><i class="icon ion-android-mail"></i><span>Messages</span></router-link>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <router-link to="/table" class="nav-link"><i class="fas fa-bars"></i><span>Student Records</span></router-link>
+                    <!-- <router-link to="/table" class="nav-link"><i class="fas fa-bars"></i><span>Student Records</span></router-link> -->
                     <router-link to="/reports" class="nav-link"><i class="icon ion-arrow-graph-up-right"></i><span>Reports</span></router-link>
                     <router-link to="/faq" class="nav-link"><i class="fas fa-question-circle"></i><span>FAQ's</span></router-link>
                     <router-link to="/category" class="nav-link"><i class="fas fa-book"></i><span>FAQ Category</span></router-link>
@@ -33,7 +33,25 @@
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top"></nav>
+              <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button> 
+                  <ul class="nav navbar-nav flex-nowrap ml-auto">
+                    <div class="d-none d-sm-block topbar-divider"></div>
+                    <li class="nav-item dropdown no-arrow" role="presentation">
+                      <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{user.name}}</span>
+                     
+                      <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
+                      </a>
+                        <div
+                            class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" role="presentation" v-on:click="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
             
             <div class="container-fluid">
                 <router-view/>
@@ -41,7 +59,7 @@
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+                
             </div>
         </footer>
         </div>
@@ -77,6 +95,12 @@ export default {
                 }})    
                     .then((response) => {    
                         this.getUserData(VueCookies.get('Token'));
+                        console.log(this.userData);
+                        if(!this.userData.first_name){
+                          this.user.name = 'user'
+                        }else {
+                          this.user.name = this.userData.first_name +' '+this.userData.last_name;
+                        }
                         // self.$set(this, "user", response.data.user)    
                     })    
                     .catch((errors) => {    

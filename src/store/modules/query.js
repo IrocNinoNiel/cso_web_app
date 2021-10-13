@@ -15,6 +15,7 @@ const actions = {
     async getAllQueries({commit}){
         const token = VueCookies.get('Token');
         const response = await axios.get("/api/query/show", {headers:{Authorization: token}});
+        console.log(response.data);
         commit('getAllQueryMutate',response.data.query_list)
     },
     
