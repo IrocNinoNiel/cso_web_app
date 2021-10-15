@@ -131,7 +131,7 @@
     var connectionOptions =  {
                 "force new connection" : true,
                 "reconnectionAttempts": "Infinity", 
-                "timeout" : 10000,                  
+                "timeout" : 1000,                  
                 "transports" : ["websocket"]
             };
 

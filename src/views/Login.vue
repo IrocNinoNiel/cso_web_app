@@ -57,6 +57,7 @@
                 password:''
             }
         },
+        computed:mapGetters(['userData']),
         methods: {
             ...mapActions(['getUser']),
            login(e){    
@@ -71,6 +72,8 @@
                     axios.post("api/users/login-user", data)    
                         .then((response) => {    
                             VueCookies.set('Token' , response.data.token, "1h") 
+                            // VueCookies.set('User_id',)
+                            console.log(response.data)
                             this.getUser(response.data);
                             router.push("/")    
                         })    

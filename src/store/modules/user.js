@@ -30,7 +30,8 @@ const actions = {
     },
     async getUserData({commit}, token){
         const response = await axios.get("/api/users/dashboard", {headers:{Authorization: token}});
-        commit('getData',response.data) 
+        const getUser = await axios.get(`/api/users/show/${response.data._id}`, {headers:{Authorization: token}});
+        commit('getData',getUser.data.user) ;
     },
     async deleteUserData({commit}){
         commit('removeData',{}) 

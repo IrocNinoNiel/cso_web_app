@@ -15,7 +15,9 @@
                     <router-link to="/manageusers" class="nav-link"><i class="fas fa-users"></i><span>Manage User</span></router-link>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <router-link to="/profile" class="nav-link"><i class="fas fa-user"></i><span>Profile</span></router-link>
+                    <router-link to="/profile" class="nav-link">
+                      <i class="fas fa-user"></i><span>Profile</span>
+                    </router-link>
                     <router-link to="/message" class="nav-link"><i class="icon ion-android-mail"></i><span>Messages</span></router-link>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -38,7 +40,7 @@
                   <ul class="nav navbar-nav flex-nowrap ml-auto">
                     <div class="d-none d-sm-block topbar-divider"></div>
                     <li class="nav-item dropdown no-arrow" role="presentation">
-                      <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{user.name}}</span>
+                      <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{this.userData.first_name +' '+this.userData.last_name}}</span>
                      
                       <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
                       </a>
@@ -79,7 +81,7 @@ export default {
    data() {    
             return {    
                 user: {    
-                    name:"Jesse",
+                    name:"",
                     type:1
                 }   
             }    
@@ -95,7 +97,9 @@ export default {
                 }})    
                     .then((response) => {    
                         this.getUserData(VueCookies.get('Token'));
-                        console.log(this.userData);
+                        // this.updateForm(this.userData);
+                        // console.log(this.userData);
+                        console.log(this.user.name);
                         if(!this.userData.first_name){
                           this.user.name = 'user'
                         }else {
@@ -114,7 +118,7 @@ export default {
                   VueCookies.remove('Token')
                   router.push("/login")
                 }
-            }    
+            },
         },   
   mounted () {
     // Toggle the side navigation
