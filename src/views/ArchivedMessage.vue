@@ -1,24 +1,25 @@
 <template>
     <div>              
-        <div class="row rounded-lg overflow-hidden shadow">
+        <div class="row rounded-lg  ">
             <!-- Users box-->
             <div class="col-3 px-0">
             <div class="bg-white">
         
                 <div class="bg-gray px-4 py-2 bg-light">
-                    <p class="h5 mb-0 py-1">Archived Messages</p>
+                    <p class="h5 mb-0 py-1">Messages</p>
                 </div>
         
                 <div class="messages-box messageContainerClass">
                     <div class="list-group rounded-0">
-                        <div v-for="student in studentList" :key="student">
+                        <div v-for="student in studentNumberList" :key="student">
                             <button class="list-group-item list-group-item-action rounded-0" :class="{ 'active ':isActive == student,'text-white':isActive == student}">
                                 <div class="media" @click="changeStudentMessage(student)">
                                     <div class="media-body ml-4">
-                                    <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <h6 class="mb-0">{{student}}</h6>
-                                        <!-- <small class="small font-weight-bold">25 Dec</small> -->
-                                    </div>
+                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                            <h6 class="mb-0">{{student}}</h6>
+                                            <!-- <small class="small font-weight-bold">25 Dec</small> -->
+                                        </div>
+                                        <!-- <p class="font-italic mb-0 text-small">When is our grades due?</p> -->
                                     </div>
                                 </div>
                             </button>
@@ -142,12 +143,10 @@
         components: {
             vueSpinner: Spinner
         },
-        computed:mapGetters(['allMessage','loadingSMS']),
+        computed:mapGetters(['allMessage','loadingSMS','studentNumberList','studentMessageList']),
         data() {
             return {
-                studentList:[],
                 socket: io(),
-                studentMessageList:[],
                 isActive: null,
                 data:{
                     text:"",
@@ -160,28 +159,18 @@
             }
         },
         methods: {
-            ...mapActions(['getAllMessage','sentMessage']), 
+            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage']), 
             changeStudentMessage(number){
                 this.isActive = number;
-                this.studentMessageList = [];
-                this.allMessage.forEach(element => {
-                    if(element.student_phone == number){
-                        this.studentMessageList.push(element);
-                    }
-                })
+                this.getCurrentMessage(number);
+                this.afterSend = false;
                 this.activate();
             },
             sendMessage(e){
                 e.preventDefault();
+                
                 this.data.number = this.isActive;
-                // console.log(this.data);
                 this.sentMessage(this.data)
-                this.studentMessageList = [];
-                this.allMessage.forEach(element => {
-                    if(element.student_phone == this.isActive){
-                        this.studentMessageList.push(element);
-                    }
-                })
                 this.data.tempt = this.data.text;
                 this.data.text = '';
                 this.afterSend = true;
@@ -197,45 +186,27 @@
             },
             getRealtimeData() {
                 socket.on("newdata", fetchedData => {
-                    this.fillData += 1
-                    console.log(fetchedData);
-                    this.studentMessageList = [];
-                    fetchedData.forEach(element => {
-                        if(element.student_phone == this.isActive){
-                            this.studentMessageList.push(element);
-                        }
-                    })
+                    console.log(this.isActive);
+                    this.getAllMessage();
+                    this.getCurrentMessage(this.isActive);
                     this.afterSend = false;
                 })
             },
+            loadData(){
+                this.getAllMessage();
+                const num = this.studentNumberList[0];
+                this.getCurrentMessage(num);
+                this.isActive = this.studentNumberList[0];
+                this.getRealtimeData()
+                this.activate();
+            }
         },
         mounted() {
-            this.getAllMessage();
-            // console.log(this.allMessage);
-            this.allMessage.forEach(element => {
-                if(this.studentList.length == 0){
-                    this.studentList.push(element.student_phone)
-                }
-
-                var found = this.studentList.find(e => e == element.student_phone);
-
-                if(!found) {
-                    this.studentList.push(element.student_phone)
-                }
-            });
-
-            this.allMessage.forEach(element => {
-                if(element.student_phone == this.studentList[0]){
-                    this.studentMessageList.push(element);
-                }
-            })
-
-            this.isActive = this.studentList[0];
-            this.activate();
-
+            this.loadData();
         },
         created() {
             this.getRealtimeData()
+            window.addEventListener('load', this.loadData)
         },
     }
 </script>

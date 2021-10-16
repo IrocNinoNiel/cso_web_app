@@ -6,9 +6,14 @@
                     <h6 class="text-primary font-weight-bold m-0">Query Overview</h6>
 
                     <div class="queryButtonContainerClass mt-2">
-                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Events</button>
                         <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Scholarship</button>
                         <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Allowance</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Events</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Personal Info</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Website</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">COE</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Grades</button>
+                        <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Course</button>
                         <button class="btn btn-primary mr-3" type="button" @click="btnChangeData">Others</button>
                     </div>
 
