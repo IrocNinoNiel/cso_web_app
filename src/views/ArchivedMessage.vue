@@ -127,54 +127,54 @@
     import { uuid } from 'vue-uuid';
     import Spinner from 'vue-simple-spinner';
 
-    import io from "socket.io-client";
+    // import io from "socket.io-client";
 
-    var connectionOptions =  {
-                "force new connection" : true,
-                "reconnectionAttempts": "Infinity", 
-                "timeout" : 1000,                  
-                "transports" : ["websocket"]
-            };
+    // var connectionOptions =  {
+    //             "force new connection" : true,
+    //             "reconnectionAttempts": "Infinity", 
+    //             "timeout" : 1000,                  
+    //             "transports" : ["websocket"]
+    //         };
 
-    var socket = io.connect("http://localhost:5000",connectionOptions);
+    // var socket = io.connect("http://localhost:5000",connectionOptions);
 
     export default {
         name:"ArchivedMessage",
         components: {
             vueSpinner: Spinner
         },
-        computed:mapGetters(['allMessage','loadingSMS','studentNumberList','studentMessageList']),
+        computed:mapGetters(['allMessage','loadingSMS','studentNumberList','studentMessageList','isActive','afterSend']),
         data() {
             return {
-                socket: io(),
-                isActive: null,
+                // socket: io(),
                 data:{
                     text:"",
                     number:"",
                     tempt:'',
                 },
                 uuid: uuid.v1(),
-                afterSend:false,
                 fillData: 0,
             }
         },
         methods: {
-            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage']), 
+            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage','getActive','getAfterSend']), 
             changeStudentMessage(number){
-                this.isActive = number;
+                this.getActive(number);
                 this.getCurrentMessage(number);
-                this.afterSend = false;
+                this.getAfterSend(false)
                 this.activate();
             },
             sendMessage(e){
                 e.preventDefault();
-                
-                this.data.number = this.isActive;
-                this.sentMessage(this.data)
-                this.data.tempt = this.data.text;
-                this.data.text = '';
-                this.afterSend = true;
 
+                if(this.data.text != ''){
+                    this.data.number = this.isActive;
+                    this.sentMessage(this.data)
+                    this.data.tempt = this.data.text;
+                    this.data.text = '';
+                    this.getAfterSend(true)
+                }
+            
                 this.scrollToEnd();
             },
             scrollToEnd: function() {    	
@@ -184,20 +184,20 @@
             activate() {
                 setTimeout(() => this.scrollToEnd(), 500);
             },
-            getRealtimeData() {
-                socket.on("newdata", fetchedData => {
-                    console.log(this.isActive);
-                    this.getAllMessage();
-                    this.getCurrentMessage(this.isActive);
-                    this.afterSend = false;
-                })
-            },
+            // getRealtimeData() {
+            //     socket.on("newdata", fetchedData => {
+            //         console.log(this.isActive);
+            //         this.getAllMessage();
+            //         this.getCurrentMessage(this.isActive);
+            //         this.afterSend = false;
+            //     })
+            // },
             loadData(){
                 this.getAllMessage();
                 const num = this.studentNumberList[0];
                 this.getCurrentMessage(num);
-                this.isActive = this.studentNumberList[0];
-                this.getRealtimeData()
+                this.getActive(this.studentNumberList[0])
+                // this.getRealtimeData()
                 this.activate();
             }
         },
@@ -205,7 +205,7 @@
             this.loadData();
         },
         created() {
-            this.getRealtimeData()
+            // this.getRealtimeData()
             window.addEventListener('load', this.loadData)
         },
     }

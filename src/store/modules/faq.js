@@ -6,12 +6,12 @@ import VueCookies from 'vue-cookies'
 
 const state = {
     faqs:[],
-    faq:{}
+    faq:{},
 };
 
 const getters = {
     allFaq : (state)=>state.faqs,
-    oneFaq : (state)=>state.faq
+    oneFaq : (state)=>state.faq,
 };
 
 const actions = {
@@ -88,7 +88,6 @@ const mutations = {
         state.faq = data;
     },
     editOneFaqMutate:(state,data)=>{
-        console.log(data);
         alert('Edited Succesfully')
         router.go(router.currentRoute);
     }

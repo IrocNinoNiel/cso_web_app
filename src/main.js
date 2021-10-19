@@ -7,17 +7,30 @@ import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/fonts/fontawesome-all.min.css'
 import './assets/fonts/ionicons.min.css'
 import moment from 'moment'
-// // socket io
-// import * as io from "socket.io-client";
-// import VueSocketIO from "vue-socket.io";
 
-// Vue.use(
-//   new VueSocketIO({
-//     debug: true,
-//     connection: io('http://localhost:5000'), // options object is Optional
-//   })
-// );
+// socket io
+import socket from 'socket.io';
+import VueSocketIO from 'vue-socket.io'
+import SocketIO from 'socket.io-client'
 
+var connectionOptions =  {
+  "force new connection" : true,
+  "reconnectionAttempts": "Infinity", 
+  "timeout" : 1000,                  
+  "transports" : ["websocket"]
+};
+
+
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: SocketIO('http://localhost:5000', connectionOptions), //options object is Optional
+    vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_"
+    }
+  })
+);
 
 
 Vue.prototype.moment = moment

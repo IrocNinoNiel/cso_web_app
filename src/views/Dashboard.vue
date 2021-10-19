@@ -58,6 +58,7 @@
             <div class="container-fluid">
                 <router-view/>
             </div>
+            <NotificationList/>
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
@@ -75,6 +76,16 @@ import VueCookies from 'vue-cookies'
 import axios from "axios";
 import router from "../router"  
 import {mapGetters, mapActions} from 'vuex';
+import NotificationList from '../components/NotificationList.vue';
+
+// import io from "socket.io-client";
+// var connectionOptions =  {
+//   "force new connection" : true,
+//   "reconnectionAttempts": "Infinity", 
+//   "timeout" : 1000,                  
+//   "transports" : ["websocket"]
+// };
+// var socket = io.connect("http://localhost:5000",connectionOptions);
 
 export default {
   name: 'App',
@@ -83,12 +94,14 @@ export default {
                 user: {    
                     name:"",
                     type:1
-                }   
+                },
+                // socket: io(),   
             }    
         }, 
-    computed:mapGetters(['userData']),
+    components:{NotificationList},
+    computed:mapGetters(['userData','isActive','allNotification']),
     methods: {    
-      ...mapActions(['getUserData','deleteUserData']), 
+      ...mapActions(['getUserData','deleteUserData','getNotification','getUnreadCurrentMessage','getAllMessage','getCurrentMessage','getAfterSend']), 
             getUserData1: function() {  
               console.log(VueCookies.get('Token'))  
                 let self = this    
@@ -119,55 +132,105 @@ export default {
                   router.push("/login")
                 }
             },
+            // getRealtimeData() {
+            //   console.log('here')
+            //     socket.on("newdata", fetchedData => {
+            //         console.log('inside socket')
+            //         this.getNotification('New Message Recieved!')
+            //         this.getUnreadCurrentMessage();
+                    
+            //     })
+            // },
         },   
-  mounted () {
-    // Toggle the side navigation
-    this.getUserData1()  
-  $("#sidebarToggle, #sidebarToggleTop").on('click', function() {
-    $("body").toggleClass("sidebar-toggled");
-    $(".sidebar").toggleClass("toggled");
-    if ($(".sidebar").hasClass("toggled")) {
-      $('.sidebar .collapse').collapse('hide');
-    }
-  });
+    mounted () {
+      console.log(this.allNotification);
+      console.log('here 1')
+      // Toggle the side navigation
+      this.getUserData1()  
+    $("#sidebarToggle, #sidebarToggleTop").on('click', function() {
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+      if ($(".sidebar").hasClass("toggled")) {
+        $('.sidebar .collapse').collapse('hide');
+      }
+    });
 
-  // Close any open menu accordions when window is resized below 768px
-  $(window).resize(function() {
-    if ($(window).width() < 768) {
-      $('.sidebar .collapse').collapse('hide');
-    }
-  });
+    // Close any open menu accordions when window is resized below 768px
+    $(window).resize(function() {
+      if ($(window).width() < 768) {
+        $('.sidebar .collapse').collapse('hide');
+      }
+    });
 
-  // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-    if ($(window).width() > 768) {
-      var e0 = e.originalEvent,
-        delta = e0.wheelDelta || -e0.detail;
-      this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+    // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+    $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+      if ($(window).width() > 768) {
+        var e0 = e.originalEvent,
+          delta = e0.wheelDelta || -e0.detail;
+        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+        e.preventDefault();
+      }
+    });
+
+    // Scroll to top button appear
+    $(document).on('scroll', function() {
+      var scrollDistance = $(this).scrollTop();
+      if (scrollDistance > 100) {
+        $('.scroll-to-top').fadeIn();
+      } else {
+        $('.scroll-to-top').fadeOut();
+      }
+    });
+
+    // Smooth scrolling using jQuery easing
+    $(document).on('click', 'a.scroll-to-top', function(e) {
+      var $anchor = $(this);
+      $('html, body').stop().animate({
+        scrollTop: ($($anchor.attr('href')).offset().top)
+      }, 1000, 'easeInOutExpo');
       e.preventDefault();
-    }
-  });
+    });
 
-  // Scroll to top button appear
-  $(document).on('scroll', function() {
-    var scrollDistance = $(this).scrollTop();
-    if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
-    } else {
-      $('.scroll-to-top').fadeOut();
-    }
-  });
+    },
+    created(){
+      // this.getRealtimeData();
+    },
+    sockets: {
+      connect() {
+        // Fired when the socket connects.
+        // this.isConnected = true;
+        console.log('connected1')
+      },
 
-  // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(e) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    e.preventDefault();
-  });
+      disconnect() {
+        // this.isConnected = false;
+      },
 
-    }
+      // Fired when the server sends something on the "messageChannel" channel.
+      messageChannel(data) {
+        console.log(data);
+        // this.socketMessage = data
+      },
+      onNewMessage(){
+        console.log('new message')
+      },
+      newdata(data){
+        this.getNotification('New Message Recieved!')
+        this.getAllMessage();
+        this.getUnreadCurrentMessage();
+        if(this.isActive != ''){
+          this.getCurrentMessage(this.isActive);
+        }
+        this.getAfterSend(false);
+        console.log(this.allNotification);
+      },
+      newSMSFromOfficer(){
+        if(this.isActive != ''){
+          this.getCurrentMessage(this.isActive);
+        }
+        this.getAfterSend(false);
+      }
+    },
 }
 </script>
 

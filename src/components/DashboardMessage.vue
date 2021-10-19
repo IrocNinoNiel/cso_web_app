@@ -8,57 +8,25 @@
                     </div>
                     <div class="messages-box messageContainerClass">
                         <div class="list-group rounded-0">
-                            <a class="list-group-item list-group-item-action active text-white rounded-0">
-                                <div class="media">
-                                    <div class="media-body ml-4">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">Jason Doe</h6>
-                                            <small class="small font-weight-bold">25 Dec</small>
+                            <div v-for="current in getUnreadMessage" :key="current._id">
+                                <!-- active text-white -->
+                                <a class="list-group-item list-group-item-action rounded-0">
+                                    <div class="media">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <h6 class="mb-0" v-if="current.student_id != null">
+                                                    <h6 class="mb-0">Jason Doe</h6>
+                                                </h6>
+                                                <h6 class="mb-0" v-else>
+                                                    <h6 class="mb-0">{{current.student_phone}}</h6>
+                                                </h6>
+                                                <small class="small font-weight-bold">{{moment(current.createdAt).format("MMM Do")}}</small>
+                                            </div>
+                                            <p class="font-italic mb-0 text-small">{{current.message}}</p>
                                         </div>
-                                        <p class="font-italic mb-0 text-small">When is our grades due?</p>
                                     </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                                <div class="media">
-                                    <div class="media-body ml-4">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">631928476891</h6><small class="small font-weight-bold">14 Dec</small>
-                                        </div>
-                                        <p class="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                                <div class="media">
-                                    <div class="media-body ml-4">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">631928476891</h6><small class="small font-weight-bold">14 Dec</small>
-                                        </div>
-                                        <p class="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                                <div class="media">
-                                    <div class="media-body ml-4">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">631928476891</h6><small class="small font-weight-bold">14 Dec</small>
-                                        </div>
-                                        <p class="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                                <div class="media">
-                                    <div class="media-body ml-4">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">631928476891</h6><small class="small font-weight-bold">14 Dec</small>
-                                        </div>
-                                        <p class="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,8 +36,41 @@
 </template>
 
 <script>
+    import {mapActions, mapGetters} from 'vuex';
+    // import io from "socket.io-client";
+
+    // var connectionOptions =  {
+    //             "force new connection" : true,
+    //             "reconnectionAttempts": "Infinity", 
+    //             "timeout" : 1000,                  
+    //             "transports" : ["websocket"]
+    //         };
+
+    // var socket = io.connect("http://localhost:5000",connectionOptions);
+
     export default {
-        name:'DashboardMessage'
+        name:'DashboardMessage',
+        computed:mapGetters(['getUnreadMessage']),
+        data(){
+            return{
+                // socket: io(),
+            }
+        },
+        methods: {
+            ...mapActions(['getUnreadCurrentMessage']), 
+            // getRealtimeData() {
+            //     socket.on("newdata", fetchedData => {
+            //         console.log('inside socket')
+            //         this.getUnreadCurrentMessage();
+                    
+            //     })
+            // },
+        },
+        created(){
+            // this.getRealtimeData();
+            // this.getUnreadCurrentMessage();
+            window.addEventListener('load', this.getUnreadCurrentMessage())
+        }
     }
 </script>
 

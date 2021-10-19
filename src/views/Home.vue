@@ -49,14 +49,21 @@
             </div> -->
             
             <div class="mb-5">
-                <QueryChart :allQueries="this.allQueries"/>
+                <div class="row">
+                    <QueryChart/>
+                    <div class="col">
+                            <DashboardMessage/>
+                        </div>
+                </div>
             </div>
             <div class="row">
-                <div class="col-4">
-                    <SpecifiedConcernList :specifiedConcernListData="this.allQueries"/>
-                </div>
                 <div class="col text-left">
-                    <QueryListTable :queryTableList="this.allQueries"/>
+                    <QueryListTable/>
+                </div>
+                <div class="col-4">
+                    <div class="">
+                        <SpecifiedConcernList/>
+                    </div>
                 </div>
             </div>
 
@@ -70,7 +77,7 @@
 
 import Chart from 'chart.js'
 import {mapActions, mapGetters} from 'vuex';
-
+import DashboardMessage from '../components/DashboardMessage.vue'
 import QueryListTable from '../components/QueryListTable.vue';
 import SpecifiedConcernList from '../components/SpecifiedConcernList.vue';
 import QueryChart from '../components/QueryChart.vue';
@@ -78,14 +85,13 @@ import QueryChart from '../components/QueryChart.vue';
 export default {
     name: 'Home',
     computed:mapGetters(['allQueries']),
-    components:{QueryListTable,SpecifiedConcernList,QueryChart},
+    components:{QueryListTable,SpecifiedConcernList,QueryChart,DashboardMessage},
 
     methods: {
         ...mapActions(['getAllQueries']), 
     },
     mounted() {
         this.getAllQueries();
-        console.log(this.allQueries);
     }
 }
 </script>

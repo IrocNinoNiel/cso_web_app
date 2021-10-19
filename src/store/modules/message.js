@@ -6,7 +6,10 @@ const state = {
     message:{},
     loadingSMS:false,
     studentList:[],
-    messageList:[]
+    messageList:[],
+    unreadMessage:[],
+    isActive:'',
+    afterSend:false
 };
 
 const getters = {
@@ -14,7 +17,10 @@ const getters = {
     oneMessage : (state)=>state.message,
     loadingSMS: (state)=>state.loadingSMS,
     studentNumberList: (state)=>state.studentList,
-    studentMessageList: (state)=>state.messageList
+    studentMessageList: (state)=>state.messageList,
+    getUnreadMessage:(state)=>state.unreadMessage,
+    isActive:(state) => state.isActive,
+    afterSend:(state) => state.afterSend
 };
 
 const actions = {
@@ -40,6 +46,17 @@ const actions = {
             .catch((errors) => {    
                 alert(errors.response.data.message)
             }) 
+    },
+    async getUnreadCurrentMessage({commit}){
+        const token = VueCookies.get('Token');
+        const response = await axios.get("/api/sms/getunreadcurrentmessage", {headers:{Authorization: token}});
+        commit('getUnreadCurrentMessageMutate',response.data)
+    },
+    async getActive({commit},number){
+        commit('getActiveMutate',number)
+    },
+    async getAfterSend({commit},value){
+        commit('getAfterSendMutate',value)
     }
     
 };
@@ -58,8 +75,14 @@ const mutations = {
     loadingSMSMutate:(state,data)=>{
         state.loadingSMS = data;
     },
-    SOCKET_MESSAGEFROMSTUDENT:(state,data)=>{
-        state.messages = data;
+    getUnreadCurrentMessageMutate:(state,data)=>{
+        state.unreadMessage = data.SMS_list
+    },
+    getActiveMutate:(state,number)=> {
+        state.isActive = number
+    },
+    getAfterSendMutate:(state,value)=> {
+        state.afterSend = value
     }
 };
 
