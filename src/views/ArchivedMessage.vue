@@ -8,18 +8,18 @@
                 <div class="bg-gray px-4 py-2 bg-light">
                     <p class="h5 mb-0 py-1">Messages</p>
                 </div>
-        
                 <div class="messages-box messageContainerClass">
                     <div class="list-group rounded-0">
-                        <div v-for="student in studentNumberList" :key="student">
+                        <div v-for="(student, index) in studentNumberList" :key="student">
                             <button class="list-group-item list-group-item-action rounded-0" :class="{ 'active ':isActive == student,'text-white':isActive == student}">
                                 <div class="media" @click="changeStudentMessage(student)">
                                     <div class="media-body ml-4">
                                         <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <h6 class="mb-0">{{student}}</h6>
+                                            <h6 class="mb-0" :class="{'font-weight-bold':!previewMessage[index].is_read}">{{student}}</h6>
                                             <!-- <small class="small font-weight-bold">25 Dec</small> -->
                                         </div>
-                                        <!-- <p class="font-italic mb-0 text-small">When is our grades due?</p> -->
+
+                                        <p class="font-italic mb-0 text-small textLimit" :class="{'font-weight-bold':!previewMessage[index].is_read}">{{previewMessage[index].message}}</p>
                                     </div>
                                 </div>
                             </button>
@@ -143,7 +143,7 @@
         components: {
             vueSpinner: Spinner
         },
-        computed:mapGetters(['allMessage','loadingSMS','studentNumberList','studentMessageList','isActive','afterSend']),
+        computed:mapGetters(['allMessage','loadingSMS','studentNumberList','studentMessageList','isActive','afterSend','previewMessage']),
         data() {
             return {
                 // socket: io(),
@@ -157,8 +157,9 @@
             }
         },
         methods: {
-            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage','getActive','getAfterSend']), 
+            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage','getActive','getAfterSend','makeUnreadRead']), 
             changeStudentMessage(number){
+                this.makeUnreadRead(number);
                 this.getActive(number);
                 this.getCurrentMessage(number);
                 this.getAfterSend(false)
@@ -195,6 +196,7 @@
             loadData(){
                 this.getAllMessage();
                 const num = this.studentNumberList[0];
+                this.makeUnreadRead(this.isActive);
                 this.getCurrentMessage(num);
                 this.getActive(this.studentNumberList[0])
                 // this.getRealtimeData()
@@ -213,13 +215,19 @@
 
 <style>
 
-.messageContainerClass {
-  height:500px;
-  overflow-y: scroll;
-}
+    .messageContainerClass {
+    height:500px;
+    overflow-y: scroll;
+    }
 
-.fontDate{
-    font-size: 10px;
-}
+    .fontDate{
+        font-size: 10px;
+    }
 
+    .textLimit {
+        width:150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

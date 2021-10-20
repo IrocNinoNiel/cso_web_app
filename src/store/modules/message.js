@@ -9,7 +9,8 @@ const state = {
     messageList:[],
     unreadMessage:[],
     isActive:'',
-    afterSend:false
+    afterSend:false,
+    previewMessage:[],
 };
 
 const getters = {
@@ -20,7 +21,8 @@ const getters = {
     studentMessageList: (state)=>state.messageList,
     getUnreadMessage:(state)=>state.unreadMessage,
     isActive:(state) => state.isActive,
-    afterSend:(state) => state.afterSend
+    afterSend:(state) => state.afterSend,
+    previewMessage:(state)=>state.previewMessage
 };
 
 const actions = {
@@ -33,6 +35,7 @@ const actions = {
     async getAllMessage({commit}){
         const token = VueCookies.get('Token');
         const response = await axios.get("/api/sms/getallmessage", {headers:{Authorization: token}});
+        console.log(response.data);
         commit('getAllMessageMutate',response.data)
     },
     async sentMessage({commit},data){
@@ -57,6 +60,12 @@ const actions = {
     },
     async getAfterSend({commit},value){
         commit('getAfterSendMutate',value)
+    },
+    async makeUnreadRead({commit}, student_num){
+        const token = VueCookies.get('Token');
+        await axios.get(`/api/sms/changesmsstatus/${student_num}`, {headers:{Authorization: token}});
+        // dispatch('getUnreadCurrentMessage')
+        commit('makeUnreadReadMutate');
     }
     
 };
@@ -65,6 +74,7 @@ const mutations = {
     getAllMessageMutate:(state,data)=>{
         state.messages = data.SMS_list
         state.studentList = data.studentNumList
+        state.previewMessage = data.previewMessage
     },
     getCurrentMessageMutate:(state,data)=>{
         state.messageList = data.currentMessageList
@@ -83,6 +93,9 @@ const mutations = {
     },
     getAfterSendMutate:(state,value)=> {
         state.afterSend = value
+    },
+    makeUnreadReadMutate:(state)=> {
+        console.log('changes')
     }
 };
 

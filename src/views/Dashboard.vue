@@ -229,7 +229,7 @@ export default {
           this.getCurrentMessage(this.isActive);
         }
         this.getAfterSend(false);
-      }
+      },
     },
 }
 </script>

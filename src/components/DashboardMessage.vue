@@ -10,19 +10,20 @@
                         <div class="list-group rounded-0">
                             <div v-for="current in getUnreadMessage" :key="current._id">
                                 <!-- active text-white -->
-                                <a class="list-group-item list-group-item-action rounded-0">
+                                <a class="list-group-item list-group-item-action rounded-0" :class="{'bg-primary':!current.is_read}">
                                     <div class="media">
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <h6 class="mb-0" v-if="current.student_id != null">
-                                                    <h6 class="mb-0">Jason Doe</h6>
+                                                    <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">Jason Doe</h6>
                                                 </h6>
                                                 <h6 class="mb-0" v-else>
-                                                    <h6 class="mb-0">{{current.student_phone}}</h6>
+                                                    <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">{{current.student_phone}}</h6>
                                                 </h6>
                                                 <small class="small font-weight-bold">{{moment(current.createdAt).format("MMM Do")}}</small>
                                             </div>
-                                            <p class="font-italic mb-0 text-small">{{current.message}}</p>
+                                            
+                                            <p class="font-italic mb-0 text-small textLimit" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">{{current.message}}</p>
                                         </div>
                                     </div>
                                 </a>
@@ -75,8 +76,15 @@
 </script>
 
 <style scoped>
-.messageContainerClass {
-  height:300px;
-  overflow-y: scroll;
-}
+    .messageContainerClass {
+        height:300px;
+        overflow-y: scroll;
+    }
+
+    .textLimit {
+        width:150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
