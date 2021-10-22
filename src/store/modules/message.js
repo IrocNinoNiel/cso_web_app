@@ -11,6 +11,7 @@ const state = {
     isActive:'',
     afterSend:false,
     previewMessage:[],
+    unReadMessage:[],
 };
 
 const getters = {
@@ -22,7 +23,8 @@ const getters = {
     getUnreadMessage:(state)=>state.unreadMessage,
     isActive:(state) => state.isActive,
     afterSend:(state) => state.afterSend,
-    previewMessage:(state)=>state.previewMessage
+    previewMessage:(state)=>state.previewMessage,
+    unReadMessage:(state)=>state.unReadMessage,
 };
 
 const actions = {
@@ -86,7 +88,8 @@ const mutations = {
         state.loadingSMS = data;
     },
     getUnreadCurrentMessageMutate:(state,data)=>{
-        state.unreadMessage = data.SMS_list
+        state.unreadMessage = data.SMS_list;
+        state.unReadMessage = data.unread_sms_list;
     },
     getActiveMutate:(state,number)=> {
         state.isActive = number

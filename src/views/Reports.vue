@@ -1,11 +1,72 @@
 <template>
     <div>
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-dark mb-0">Reports</h3>
+            <div class="form-group">
+                <label for="categoryChoose">Select Category</label>
+                <select class="form-control" id="categoryChoose" v-model="category" @change="onClick">
+                    <option value="all" selected>All</option>
+                    <option :value="cat._id" v-for="cat in allCategories" :key="cat._id">{{cat.category_name}}</option>
+                </select>
+            </div>
         </div>
-        <QueryListTable :queryTableList="this.allQueries"/>
-        <QueryChart :allQueries="this.allQueries"/>
-        <SpecifiedConcernList :specifiedConcernListData="this.allQueries"/>
+        <div v-if="this.category == null">
+            <h1 class="text-center">Choose a category please</h1>
+        </div>
+        <div v-else>
+            <div class="row">
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-success py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <button class="btn" @click="changeTableData(1)">
+                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Total QUERIES</span></div>
+                                    </button>
+                                    <div class="text-dark font-weight-bold h5 mb-0"><span>{{categoryList.length}}</span></div>
+                                </div>
+                                <div class="col-auto"><i class="icon ion-email fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-warning py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <button class="btn" @click="changeTableData(2)">
+                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Total QUERIES This Month</span></div>
+                                    </button>
+                                    <div class="text-dark font-weight-bold h5 mb-0"><span>{{dataMonth.length}}</span></div>
+                                </div>
+                                <div class="col-auto"><i class="icon ion-email fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-primary py-2">
+                        <div class="card-body">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col mr-2">
+                                    <button class="btn" @click="changeTableData(3)">
+                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Total QUERIES this Day</span></div>
+                                    </button>
+                                    <div class="text-dark font-weight-bold h5 mb-0"><span>{{dataNow.length}}</span></div>
+                                </div>
+                                <div class="col-auto"><i class="icon ion-email fa-2x text-gray-300"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <QueryChartReport :chartLabels="label" :chartData="data"/>
+                <div class="col">
+                    <TableStudentReport :queryTableList="tableData"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -13,66 +74,99 @@
 // import Chart from 'chart.js'
 // import queryChartData from '../query.js'
 import {mapActions, mapGetters} from 'vuex';
-import QueryListTable from '../components/QueryListTable.vue';
-import SpecifiedConcernList from '../components/SpecifiedConcernList.vue';
-import QueryChart from '../components/QueryChart.vue';
-
+import QueryChartReport from '../components/QueryChartReport.vue'
+import TableStudentReport from '../components/TableStudenReport.vue'
 export default {
     
     name:'Reports',
-    computed:mapGetters(['allQueries']),
-    components:{QueryListTable,SpecifiedConcernList,QueryChart},
+    computed:mapGetters(['allQueries','allCategories','categoryQueries']),
+    components:{QueryChartReport,TableStudentReport},
     data() {
         return {
-            // queryChartData: queryChartData,
-            queryData: null,
-            concernList:[],
+            category:null,
+            data:[],
+            label:[],
+            categoryList:[],
+            dateNow:new Date,
+            dataNow:[],
+            dataMonth:[],
+            tableData:[]
         }
     },
      methods: {
-         ...mapActions(['getAllQueries']), 
-        // fillData () {
-        //     const chartLabels = ["May", "Jun", "July", "Aug","Sep","Oct","Nov","Dec"]
-        //     const chartData = [0, 0, 0, 0, this.allQueries.length, 1, 0, 0]
+         ...mapActions(['getAllQueries','getQueriesBaseOnCategory']), 
+            onClick(){
+                this.getAllQueries;
+                if(this.category == 'all'){
+                    this.categoryList = this.allQueries;
+                }else{
+                    this.categoryList = this.allQueries.filter(e=>e.category_id === this.category);
+                }
 
-        //     this.queryData = {
-        //         type: "bar",
-        //         data: {
-        //         labels: chartLabels,
-        //         datasets: [
-        //             {
-        //             label: "Number of Queries",
-        //             data: chartData,
-        //             backgroundColor: "rgba(54,73,93,.5)",
-        //             borderColor: "#36495d",
-        //             borderWidth: 3
-        //             },
-        //         ]
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             lineTension: 1,
-        //             scales: {
-        //                 yAxes: [
-        //                 {
-        //                     ticks: {
-        //                     beginAtZero: true,
-        //                     padding: 25
-        //                     }
-        //                 }
-        //                 ]
-        //             }
-        //         }
-        //     }
-              
-        // }
+                this.dataNow = this.getRecentData(this.categoryList);
+                this.dataMonth = this.getMonthData(this.categoryList);
+                this.tableData = this.categoryList;
+                this.getLabels(1);
+                this.getData(1);
+            },
+            getLabels(type){
+                if(type == 1){
+                    this.label = ["Jan","Feb","Mar","Apr","May", "Jun", "July", "Aug","Sep","Oct","Nov","Dec"]
+                }else if(type == 2){
+
+                }else{
+                    
+                }
+            },
+            getData(type){
+                if(type == 1){
+                    this.data = [
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 0).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 1).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 2).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 3).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 4).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 5).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 6).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 7).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 8).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 9).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 10).length,
+                        this.categoryList.filter(e=>new Date(e.createdAt).getMonth() == 11).length,
+                    ]
+                } else if(type == 2){
+                    
+                }else{
+
+                }
+            },
+            loadData(){
+                this.getAllQueries();
+            },
+            getRecentData(query){
+                return query.filter(e=>new Date(e.createdAt).getDate() === new Date().getDate())
+            },
+            getMonthData(query){
+                return query.filter(e=>new Date(e.createdAt).getMonth() === new Date().getMonth())
+            },
+            changeTableData(e){
+                if(e == 1){
+                    this.tableData = this.categoryList;
+                }else if(e == 2){
+                    this.tableData = this.dataMonth;
+                }else if(e == 3){
+                    this.tableData = this.dataNow;
+                }
+            }
     },
     mounted() {
+        // console.log(new Date(this.allQueries[0].createdAt).getDate());
+        // console.log(new Date().getDate());
+        // console.log(moment().format('W'))
         this.getAllQueries();
-        // console.log(this.allQueries.length);
-        // const ctx = document.getElementById('query-chart');
-        // this.fillData();
-        // new Chart(ctx, this.queryData);
+    },
+    created(){
+        window.addEventListener('load', this.loadData)
     }
 }
 </script>

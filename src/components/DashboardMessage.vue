@@ -15,7 +15,7 @@
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <h6 class="mb-0" v-if="current.student_id != null">
-                                                    <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">Jason Doe</h6>
+                                                    <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">{{current.student_phone}}</h6>
                                                 </h6>
                                                 <h6 class="mb-0" v-else>
                                                     <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">{{current.student_phone}}</h6>

@@ -24,6 +24,7 @@ const actions = {
     async getQueriesBaseOnCategory({commit},id){
         const token = VueCookies.get('Token');
         const response = await axios.get(`/api/query/showbycategory/${id}`, {headers:{Authorization: token}});
+        console.log(response.data)
         commit('getQueriesBaseOnCategory',response.data.query_list)
     }
 };

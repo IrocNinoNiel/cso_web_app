@@ -34,32 +34,33 @@
           </div>
         </nav>
         <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
+          <div id="content">
               <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button> 
-                  <ul class="nav navbar-nav flex-nowrap ml-auto">
-                    <div class="d-none d-sm-block topbar-divider"></div>
-                    <li class="nav-item dropdown no-arrow" role="presentation">
-                      <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{this.userData.first_name +' '+this.userData.last_name}}</span>
-                     
-                      <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
-                      </a>
-                        <div
-                            class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" role="presentation" v-on:click="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </nav>
+                   <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button> 
+                      <ul class="nav navbar-nav flex-nowrap ml-auto">
+                        <AlertUnreadMessage/>
+                        <div class="d-none d-sm-block topbar-divider"></div>
+                        <li class="nav-item dropdown no-arrow" role="presentation">
+                          <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{this.userData.first_name +' '+this.userData.last_name}}</span>
+                        
+                          <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
+                          </a>
+                            <div
+                                class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" role="presentation" v-on:click="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+            </div>
+            </nav>
             
             <div class="container-fluid">
                 <router-view/>
             </div>
             <NotificationList/>
-        </div>
+          </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
                 
@@ -77,6 +78,7 @@ import axios from "axios";
 import router from "../router"  
 import {mapGetters, mapActions} from 'vuex';
 import NotificationList from '../components/NotificationList.vue';
+import AlertUnreadMessage from '../components/AlertUnreadMessage.vue';
 
 // import io from "socket.io-client";
 // var connectionOptions =  {
@@ -98,7 +100,7 @@ export default {
                 // socket: io(),   
             }    
         }, 
-    components:{NotificationList},
+    components:{NotificationList,AlertUnreadMessage},
     computed:mapGetters(['userData','isActive','allNotification']),
     methods: {    
       ...mapActions(['getUserData','deleteUserData','getNotification','getUnreadCurrentMessage','getAllMessage','getCurrentMessage','getAfterSend']), 
@@ -218,7 +220,7 @@ export default {
         this.getNotification('New Message Recieved!')
         this.getAllMessage();
         this.getUnreadCurrentMessage();
-        if(this.isActive != ''){
+        if(this.isActive != '' || this.isActive != undefined){
           this.getCurrentMessage(this.isActive);
         }
         this.getAfterSend(false);

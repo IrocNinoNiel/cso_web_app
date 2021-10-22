@@ -157,13 +157,14 @@
             }
         },
         methods: {
-            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage','getActive','getAfterSend','makeUnreadRead']), 
+            ...mapActions(['getAllMessage','sentMessage','getCurrentMessage','getActive','getAfterSend','makeUnreadRead','getUnreadCurrentMessage']), 
             changeStudentMessage(number){
                 this.makeUnreadRead(number);
                 this.getActive(number);
                 this.getCurrentMessage(number);
                 this.getAfterSend(false)
                 this.activate();
+                this.getUnreadCurrentMessage();
             },
             sendMessage(e){
                 e.preventDefault();
@@ -196,7 +197,10 @@
             loadData(){
                 this.getAllMessage();
                 const num = this.studentNumberList[0];
-                this.makeUnreadRead(this.isActive);
+                if(this.isActive != '' || this.isActive != undefined){
+                    this.makeUnreadRead(this.isActive);
+                }
+                this.getUnreadCurrentMessage();
                 this.getCurrentMessage(num);
                 this.getActive(this.studentNumberList[0])
                 // this.getRealtimeData()

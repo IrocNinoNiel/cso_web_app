@@ -30,7 +30,7 @@
     export default {
         
         name:'QueryChart',
-        computed:mapGetters(['allCategories','categoryQueries','pending']),
+        computed:mapGetters(['allCategories','allQueries','pending','queriesBasedCategory']),
         data() {
             return {
                 janCount:0,
@@ -44,12 +44,13 @@
                 sepCount:0,
                 octCount:0,
                 novCount:0,
-                decCount:0
+                decCount:0,
+                dataList:[]
                
             }
         },
         methods:{
-            ...mapActions(['getAllCategory','getQueriesBaseOnCategory']), 
+            ...mapActions(['getAllCategory','getAllQueries','getQueriesBaseOnCategory']), 
             fillData () {
             const chartLabels = ["Jan","Feb","Mar","Apr","May", "Jun", "July", "Aug","Sep","Oct","Nov","Dec"]
             
@@ -89,20 +90,21 @@
               
             },
             btnChangeData(id){
+                this.dataList = this.allQueries.filter(e=>e.category_id === id);
                 this.getQueriesBaseOnCategory(id);
-                if(this.categoryQueries.length > 0){
-                    this.janCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 0).length;
-                    this.febCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 1).length;
-                    this.marCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 2).length;
-                    this.aprCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 3).length;
-                    this.mayCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 4).length;
-                    this.junCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 5).length;
-                    this.julyCoun=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 6).length;
-                    this.augCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 7).length;
-                    this.sepCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 8).length;
-                    this.octCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 9).length;
-                    this.novCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 10).length;
-                    this.decCount=this.categoryQueries.filter(e=>new Date(e.createdAt).getMonth() == 11).length;
+                if(this.dataList.length > 0){
+                    this.janCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 0).length;
+                    this.febCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 1).length;
+                    this.marCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 2).length;
+                    this.aprCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 3).length;
+                    this.mayCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 4).length;
+                    this.junCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 5).length;
+                    this.julyCoun=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 6).length;
+                    this.augCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 7).length;
+                    this.sepCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 8).length;
+                    this.octCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 9).length;
+                    this.novCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 10).length;
+                    this.decCount=this.dataList.filter(e=>new Date(e.createdAt).getMonth() == 11).length;
                 } else {
                     this.janCount=0,
                     this.febCount=0,
@@ -124,6 +126,7 @@
             },
             loadCategory(){
                 this.getAllCategory();
+                this.getAllQueries();
             }
         },
         mounted() {
@@ -134,6 +137,7 @@
         created(){
             window.addEventListener('load', this.loadCategory)
             this.getAllCategory();
+            this.getAllQueries();
         }
         
     }
