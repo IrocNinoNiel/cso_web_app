@@ -20,7 +20,7 @@
                                     <b>Utterances</b>
                                     <div v-for="utterance in faq.faq_utterances" :key="utterance._id">
                                         <div class="card card-body mb-2">
-                                            {{utterance}}
+                                            {{utterance.value}}
                                         </div>
                                     </div>
                                     <hr>

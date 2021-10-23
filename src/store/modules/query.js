@@ -5,7 +5,8 @@ const state = {
     queries:[],
     query:{},
     queriesBasedCategory:[],
-    notPending:false
+    notPending:false,
+    unidentifiedQuery:[]
 };
 
 const getters = {
@@ -13,6 +14,7 @@ const getters = {
     oneQuery : (state)=>state.query,
     categoryQueries :(state)=>state.queriesBasedCategory,
     pending: (state)=>state.notPending,
+    unidentifiedQuery:(state)=>state.unidentifiedQuery,
 };
 
 const actions = {
@@ -24,8 +26,13 @@ const actions = {
     async getQueriesBaseOnCategory({commit},id){
         const token = VueCookies.get('Token');
         const response = await axios.get(`/api/query/showbycategory/${id}`, {headers:{Authorization: token}});
+        commit('getQueriesBaseOnCategoryMutate',response.data.query_list)
+    },
+    async getUnidentifiedQuery({commit}){
+        const token = VueCookies.get('Token');
+        const response = await axios.get(`/api/query/unidentifiedquery`, {headers:{Authorization: token}});
         console.log(response.data)
-        commit('getQueriesBaseOnCategory',response.data.query_list)
+        commit('getUnidentifiedQueryMutate',response.data.query_list)
     }
 };
 
@@ -33,9 +40,12 @@ const mutations = {
     getAllQueryMutate:(state,data)=>{
         state.queries = data
     },
-    getQueriesBaseOnCategory:(state,data)=>{
+    getQueriesBaseOnCategoryMutate:(state,data)=>{
         state.queriesBasedCategory = data;
         state.notPending = true;
+    },
+    getUnidentifiedQueryMutate:(state,data)=>{
+        state.unidentifiedQuery = data;
     }
 };
 

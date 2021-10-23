@@ -103,7 +103,7 @@ export default {
     components:{NotificationList,AlertUnreadMessage},
     computed:mapGetters(['userData','isActive','allNotification']),
     methods: {    
-      ...mapActions(['getUserData','deleteUserData','getNotification','getUnreadCurrentMessage','getAllMessage','getCurrentMessage','getAfterSend']), 
+      ...mapActions(['getUserData','deleteUserData','getNotification','getUnreadCurrentMessage','getAllMessage','getCurrentMessage','getAfterSend','getUnidentifiedQuery']), 
             getUserData1: function() {  
               console.log(VueCookies.get('Token'))  
                 let self = this    
@@ -219,6 +219,7 @@ export default {
       newdata(data){
         this.getNotification('New Message Recieved!')
         this.getAllMessage();
+        this.getUnidentifiedQuery();
         this.getUnreadCurrentMessage();
         if(this.isActive != '' || this.isActive != undefined){
           this.getCurrentMessage(this.isActive);

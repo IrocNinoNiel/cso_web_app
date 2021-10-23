@@ -52,7 +52,7 @@
                 <div class="row">
                     <QueryChart/>
                     <div class="col">
-                            <DashboardMessage/>
+                            <UnidentifiedQueryList/>
                         </div>
                 </div>
             </div>
@@ -74,18 +74,17 @@
 </template>
 
 <script>
-
-import Chart from 'chart.js'
 import {mapActions, mapGetters} from 'vuex';
 import DashboardMessage from '../components/DashboardMessage.vue'
 import QueryListTable from '../components/QueryListTable.vue';
 import SpecifiedConcernList from '../components/SpecifiedConcernList.vue';
 import QueryChart from '../components/QueryChart.vue';
+import UnidentifiedQueryList from '../components/UnidentifiedQueryList.vue'
 
 export default {
     name: 'Home',
     computed:mapGetters(['allQueries']),
-    components:{QueryListTable,SpecifiedConcernList,QueryChart,DashboardMessage},
+    components:{QueryListTable,SpecifiedConcernList,QueryChart,DashboardMessage,UnidentifiedQueryList},
 
     methods: {
         ...mapActions(['getAllQueries']), 
