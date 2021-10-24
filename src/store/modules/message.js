@@ -52,6 +52,17 @@ const actions = {
                 alert(errors.response.data.message)
             }) 
     },
+    async sentMessageDashboard({commit},data){
+        const token = VueCookies.get('Token');
+        commit('loadingSMSMutate',true);
+        axios.post('/api/sms/send', {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                commit('loadingSMSMutate',false);  
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+            }) 
+    },
     async getUnreadCurrentMessage({commit}){
         const token = VueCookies.get('Token');
         const response = await axios.get("/api/sms/getunreadcurrentmessage", {headers:{Authorization: token}});

@@ -82,10 +82,6 @@
                     }
                 });
 
-
-
-
-                
                 if(!this.hasNoError){
                     alert('Please Input All Fields');
                 }else{

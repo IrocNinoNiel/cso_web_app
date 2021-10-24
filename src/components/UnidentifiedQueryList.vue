@@ -15,7 +15,7 @@
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                             
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#addModal" @click="addNewFAQButton(unidentified.query_name)">
+                                                <button type="button" class="btn" data-toggle="modal" data-target="#addModal" @click="addNewFAQButton(unidentified)">
                                                     <h6 class="mb-0">
                                                         <h6 class="mb-0">{{unidentified.phone_num}}</h6>
                                                     </h6>
@@ -55,10 +55,15 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input v-model="faq.faq_utterances" class="form-control form-control-user" :class="[error.faq_utterances ? errorClass : '']" type="text"   disabled>
+                            <input v-model="temptValue" class="form-control form-control-user" :class="[error.faq_utterances ? errorClass : '']" type="text"   disabled>
                         </div>
                         <div class="form-group">
                             <textarea class="form-control" type="text" id="faq_answer" placeholder="FAQ Answer" name="faq_answer" v-model="faq.faq_answer" :class="[error.faq_answer ? errorClass : '']" rows="5"></textarea>
+                        </div>
+                        <div v-if='loadingSMS'>
+                            <div class="media w-50 mb-3">
+                                <vueSpinner/>
+                            </div>
                         </div>
                         <input type="submit" value="Add New Faq " class="btn btn-primary btn-block text-white btn-user">
                     </form>
@@ -72,10 +77,11 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
+    import router from '@/router'
 
     export default {
         name:'UnidentifiedQueryList',
-        computed:mapGetters(['unidentifiedQuery','allCategories']),
+        computed:mapGetters(['unidentifiedQuery','allCategories','userData','loadingSMS']),
          data(){
             return{
                 faq:{
@@ -92,20 +98,53 @@
                     category_id:"",
                     faq_utterances:"",
                 },
+                temptValue: '',
                 errorClass: 'border-danger',
                 hasNoError:true,
                 noUtternaces:false,
                 hasEmptyUtternaces:false,
-                faqEditID:null
+                faqEditID:null,
+                sms:{
+                    number:'',
+                    text:'',
+                },
             }
         },
         methods: {
-            ...mapActions(['getUnidentifiedQuery']), 
+            ...mapActions(['getUnidentifiedQuery','addNewFaqDashboard','sentMessageDashboard']), 
             addFaq(e){
                 e.preventDefault();
+                this.hasNoError = true;
+                
+                this.faq.faq_title == "" ? (this.error.faq_title = true, this.hasNoError = false): this.error.faq_title = false;
+                this.faq.faq_answer == "" ? (this.error.faq_answer = true, this.hasNoError = false): this.error.faq_answer = false;
+                this.faq.category_id == "" ? (this.error.category_id = true, this.hasNoError = false): this.error.category_id = false;
+
+                if(!this.hasNoError){
+                    alert('Please Input All Fields');
+                }else{
+                    this.faq.faq_utterances.push({value:this.temptValue});
+                    const data = {
+                        faq:this.faq,
+                        id:this.faqEditID
+                    };
+                    this.sms.text = this.faq.faq_answer;
+
+                    console.log(this.sms);
+                    console.log(data.faq);
+
+                    this.addNewFaqDashboard(data.faq);
+                    this.sentMessageDashboard(this.sms);
+                    alert('SMS Send and Saved');
+
+                    router.go(router.currentRoute);
+
+                }
             },
-            addNewFAQButton(name){
-                this.faq.faq_utterances = name;
+            addNewFAQButton(unidentified){
+                this.temptValue = unidentified.query_name;
+                this.sms.number = unidentified.phone_num;
+                this.faq.officer_id = this.userData._id;
             }
         },
         created(){

@@ -26,6 +26,7 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
+    import chart from 'chart.js';
 
     export default {
         

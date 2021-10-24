@@ -32,6 +32,17 @@ const actions = {
                 alert(errors.response.data.message)
             }) 
     },
+    async addNewFaqDashboard({commit}, data){
+        const token = VueCookies.get('Token');
+        axios.post('/api/FAQ/add', {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                console.log(response.data);
+            })    
+            .catch((errors) => { 
+                console.log(errors);   
+                alert('Error Here')
+            }) 
+    },
     async deleteFaq({commit},id){
         const token = VueCookies.get('Token');
         axios.delete(`/api/FAQ/delete/${id}`,{headers:{authorization: token}})

@@ -73,10 +73,9 @@
                         </div>
                         <div class="form-group">
                             <div v-for="(utterances, index) in faq.faq_utterances" :key="index">
-                                {{utterances.value}}
                                 <div class="row m-2">
                                     <div class="col col-8">
-                                        <input v-model="faq.faq_utterances[index]" class="form-control form-control-user" type="text">
+                                        <input v-model="faq.faq_utterances[index].value" class="form-control form-control-user" type="text">
                                     </div>
                                     <div class="col">
                                         <button @click="deleteUtterances(index)" class="btn btn-outline-danger" type="button"><i class="far fa-times-circle"></i></button>
