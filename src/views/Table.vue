@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <router-link to="AddStudent" class="btn btn-primary">Add Student</router-link>
-        </div>
+        </div> -->
         <div class="card shadow">
             <StudentListTable/>
         </div>

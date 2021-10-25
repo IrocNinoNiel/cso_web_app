@@ -4,39 +4,28 @@
             <p class="text-primary m-0 font-weight-bold">Student Info</p>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 text-nowrap">
-                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label>Show&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm"><option value="10" selected="">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&nbsp;</label></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="text-md-right dataTables_filter" id="dataTable_filter"><label><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                </div>
-            </div>
             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                 <table class="table dataTable my-0" id="dataTable">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Student ID</th>
                             <th>School</th>
-                            <th>Address</th>
+                            <th>Course</th>
                             <th>Mobile Number</th>
-                            <th>Action</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="student in allStudent" :key="student._id">
-                            <td>{{student.first_name}} {{student.last_name}}</td>
-                            <td>{{student.school}}</td>
-                            <td>{{student.address}}</td>
-                            <td>{{student.phone_number}}</td>
-                            <td class="row">
-                                <div class="mr-1">
-                                    <button class="btn btn-danger" @click="deleteOneStudent(student._id)"><i class="far fa-times-circle"></i></button>
-                                </div>
-                                <div class="ml-1">
-                                    <button class="btn btn-warning" @click="editStudent(student._id)"><i class="fas fa-user-edit"></i></button>
-                                </div>
+                            <td>
+                                <button class="btn" @click="getInfoModal(student)" data-toggle="modal" data-target="#infoModal">
+                                    {{student._id}}
+                                </button>
                             </td>
+                            <td>{{student.school}}</td>
+                            <td>{{student.course}}</td>
+                            <td>{{student.phone_number}}</td>
+                            
                         </tr>
                     </tbody>
                     <tfoot>
@@ -44,50 +33,65 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="row">
-                <div class="col-md-6 align-self-center">
-                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                </div>
-                <div class="col-md-6">
-                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
         </div>
+
+        <!-- Show Info Modal -->
+        <StudentQueryTable :student="student" :countTotalKnownQuery="countTotalKnownQuery" :countTotalUnknownQuery="countTotalUnknownQuery" :queryStudentList="queryStudentList" />
     </div>
 </template>
 
 <script>
 
 import {mapActions, mapGetters} from 'vuex';
+import StudentQueryTable from '../components/StudentQueryTable.vue'
 import router from "../router"  
 export default {
     name:'StudentListTable',
-    computed:mapGetters(['allStudent']),
-    methods: {
-        ...mapActions(['getAllStudents','deleteStudent','getOneStudent']), 
-        deleteOneStudent(id){
-            if(confirm('Are you sure??')){
-                this.deleteStudent(id);
-            }
-        },
-        editStudent(_id){
-            router.push({name:'EditStudent',params:{id:_id}})
+    data(){
+        return{
+            student:{
+                id:null,
+                school:null,
+                course:null,
+                phone_num:null
+            },
+            countTotalKnownQuery:0,
+            countTotalUnknownQuery:0,
+            queryStudentList:[],
         }
     },
-    mounted(){
+    components:{StudentQueryTable},
+    computed:mapGetters(['allStudent','allQueries']),
+    methods: {
+        ...mapActions(['getAllStudents','deleteStudent','getOneStudent','getAllQueries']), 
+        getInfoModal(student){
+            this.getAllQueries();
+
+            this.student.id = student._id;
+            this.student.school = student.school;
+            this.student.course = student.course;
+            this.student.phone_num = student.phone_number;
+            
+            this.queryStudentList = this.allQueries.filter(e=>e.phone_num == this.student.phone_num);
+
+            this.countTotalKnownQuery = this.queryStudentList.filter(e=>e.faq_id != null).length;
+            this.countTotalUnknownQuery = this.queryStudentList.filter(e=>e.faq_id === null).length;
+        }
+    },
+    created(){
         this.getAllStudents();
+        this.getAllQueries();
     }
 }
 </script>
 
 <style>
-
+.my-custom-scrollbar {
+    position: relative;
+    height: 300px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
 </style>
