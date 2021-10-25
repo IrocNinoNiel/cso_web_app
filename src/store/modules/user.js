@@ -49,6 +49,62 @@ const actions = {
                 // commit('errorRegister',errors.response.data)
                 // alert('Invalid Credentials')
             }) 
+    },
+    async editedUserInfo({commit}, data){
+        const token = VueCookies.get('Token');
+        const id = data._id;
+        axios.post(`/api/users/editinfo/${id}`, {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                console.log(response);
+                commit('editedUserInfoMutate',response.data);  
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+                // commit('errorRegister',errors.response.data)
+                // alert('Invalid Credentials')
+            }) 
+    },
+    async editedUserContact({commit}, data){
+        const token = VueCookies.get('Token');
+        const id = data._id;
+        axios.post(`/api/users/editcontact/${id}`, {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                console.log(response);
+                commit('editedUserInfoMutate',response.data);  
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+                // commit('errorRegister',errors.response.data)
+                // alert('Invalid Credentials')
+            }) 
+    },
+    async editedUsername({commit}, data){
+        const token = VueCookies.get('Token');
+        const id = data._id;
+        axios.post(`/api/users/editusername/${id}`, {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                console.log(response);
+                commit('editedUserInfoMutate',response.data);  
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+                // commit('errorRegister',errors.response.data)
+                // alert('Invalid Credentials')
+            }) 
+    },
+    async editedPassword({commit}, data){
+        const token = VueCookies.get('Token');
+        const id = data._id;
+        axios.post(`/api/users/editpassword/${id}`, {data}, {headers:{authorization: token}})
+            .then((response) => {    
+                console.log(response);
+                commit('editedUserInfoMutate',response.data);  
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+                // commit('errorRegister',errors.response.data)
+                // alert('Invalid Credentials')
+            }) 
     }
 
 };
@@ -75,7 +131,12 @@ const mutations = {
         console.log(data)
         state.errMsg = data.message
         state.hasRegisterError = true
+    },
+    editedUserInfoMutate:(state,data)=>{
+        alert('User Information Edited Succesfully')
+        router.go(router.currentRoute);
     }
+    
 };
 
 

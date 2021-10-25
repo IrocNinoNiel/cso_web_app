@@ -107,6 +107,7 @@
                 sms:{
                     number:'',
                     text:'',
+                    sms_id:null,
                 },
             }
         },

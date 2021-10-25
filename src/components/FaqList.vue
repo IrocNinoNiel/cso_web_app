@@ -17,10 +17,14 @@
                                         <b>Category: </b>{{faq.category.category_name}}
                                     </div>
                                     <hr>
-                                    <b>Utterances</b>
-                                    <div v-for="utterance in faq.faq_utterances" :key="utterance._id">
-                                        <div class="card card-body mb-2">
-                                            {{utterance.value}}
+                                    <a class="btn" data-toggle="collapse" :href="'#'+faq.faq_title" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Utterances</span></div>
+                                    </a>
+                                    <div class="collapse mt-2" :id=faq.faq_title>
+                                        <div v-for="utterance in faq.faq_utterances" :key="utterance._id">
+                                            <div class="card card-body mb-2">
+                                                {{utterance.value}}
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
