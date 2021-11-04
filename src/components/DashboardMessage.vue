@@ -10,11 +10,11 @@
                         <div class="list-group rounded-0">
                             <div v-for="current in getUnreadMessage" :key="current._id">
                                 <!-- active text-white -->
-                                <a class="list-group-item list-group-item-action rounded-0" :class="{'bg-primary':!current.is_read}">
+                                <a class="list-group-item list-group-item-action rounded-0 " :class="{'bg-primary':!current.is_read}">
                                     <div class="media">
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0" v-if="current.student_id != null">
+                                                <h6 class="mb-0 mr-4" v-if="current.student_id != null">
                                                     <h6 class="mb-0" :class="{'font-weight-bold':!current.is_read,'text-white':!current.is_read}">{{current.student_phone}}</h6>
                                                 </h6>
                                                 <h6 class="mb-0" v-else>

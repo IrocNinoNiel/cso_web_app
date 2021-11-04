@@ -1,6 +1,6 @@
 <template>
-    <div class="col-lg-7 col-xl-8">
-        <div class="row d-flex flex-column">
+    <div class="">
+        <div class="">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Query Overview</h6>

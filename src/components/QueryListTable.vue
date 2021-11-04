@@ -38,16 +38,14 @@
         props: ['queryTableList'],
         mounted(){
             console.log(this.categoryQueries);
-            
         }
-        
     }
 </script>
 
 <style>
 .my-custom-scrollbar {
     position: relative;
-    height: 500px;
+    height: 1000px;
     overflow: auto;
 }
 .table-wrapper-scroll-y {
