@@ -12,6 +12,9 @@
         <div v-if="this.category == null">
             <h1 class="text-center">Choose a category please</h1>
         </div>
+        <div v-else-if="this.category == this.categoryOther">
+            <OtherQueryList/>
+        </div>
         <div v-else>
             <div class="row">
                 <div class="col-md-6 col-xl-3 mb-4">
@@ -76,14 +79,16 @@
 import {mapActions, mapGetters} from 'vuex';
 import QueryChartReport from '../components/QueryChartReport.vue'
 import TableStudentReport from '../components/TableStudenReport.vue'
+import OtherQueryList from '../components/OtherQueryList.vue'
 export default {
     
     name:'Reports',
-    computed:mapGetters(['allQueries','allCategories','categoryQueries']),
-    components:{QueryChartReport,TableStudentReport},
+    computed:mapGetters(['allQueries','allCategories','categoryQueries','otherpossiblecategory']),
+    components:{QueryChartReport,TableStudentReport,OtherQueryList},
     data() {
         return {
             category:null,
+            categoryOther:null,
             data:[],
             label:[],
             categoryList:[],
@@ -94,8 +99,11 @@ export default {
         }
     },
      methods: {
-         ...mapActions(['getAllQueries','getQueriesBaseOnCategory']), 
+         ...mapActions(['getAllQueries','getQueriesBaseOnCategory','getOtherPossibleCategory']), 
             onClick(){
+
+                this.categoryOther = this.allCategories.find(e=> e.category_name == 'others')._id;
+                
                 this.getAllQueries;
                 if(this.category == 'all'){
                     this.categoryList = this.allQueries;
@@ -164,6 +172,7 @@ export default {
         // console.log(new Date().getDate());
         // console.log(moment().format('W'))
         this.getAllQueries();
+        this.getOtherPossibleCategory();
     },
     created(){
         window.addEventListener('load', this.loadData)
