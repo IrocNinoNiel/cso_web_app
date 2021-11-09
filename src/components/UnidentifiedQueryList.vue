@@ -8,14 +8,15 @@
                     </div>
                     <div class="messages-box messageContainerClass">
                         <div class="list-group rounded-0">
-                            <div v-for="unidentified in unidentifiedQuery" :key="unidentified._id">
+                            <div v-for="unidentified in otherpossiblecategory" :key="unidentified._id">
+                                <!-- {{unidentified}} -->
                                 <!-- active text-white -->
                                 <a class="list-group-item list-group-item-action rounded-0">
                                     <div class="media">
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                             
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#addModal" @click="addNewFAQButton(unidentified)">
+                                                <button type="button" class="btn" data-toggle="modal" data-target="#showModal" @click="unknownFAQButton(unidentified)">
                                                     <h6 class="mb-0">
                                                         <h6 class="mb-0">{{unidentified.phone_num}}</h6>
                                                     </h6>
@@ -35,40 +36,43 @@
         </div>
 
         <!-- Add New FAQ -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
+             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New FAQ</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="user" @submit="addFaq">
-                        <div class="form-group">
-                            <input class="form-control form-control-user" type="text" id="faq_title" placeholder="FAQ Title" name="faq_title" v-model="faq.faq_title" :class="[error.faq_title ? errorClass : '']">
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control " id="faq_category" v-model="faq.category_id" :class="[error.category_id ? errorClass : '']">
-                                <option :value="category._id" v-for="category in allCategories" :key="category._id">{{category.category_name}}</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input v-model="temptValue" class="form-control form-control-user" :class="[error.faq_utterances ? errorClass : '']" type="text"   disabled>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" type="text" id="faq_answer" placeholder="FAQ Answer" name="faq_answer" v-model="faq.faq_answer" :class="[error.faq_answer ? errorClass : '']" rows="5"></textarea>
-                        </div>
-                        <div v-if='loadingSMS'>
-                            <div class="media w-50 mb-3">
-                                <vueSpinner/>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body" v-if="this.queryInfo != null">
+                                <h4 class="card-title">
+                                    <strong v-if="this.queryInfo.student">{{this.queryInfo.student.student_id}}</strong>
+                                    <strong v-else>--</strong>
+                                </h4>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>Contact Number:</strong></h6>
+                                <h6 class="card-text">{{this.queryInfo.phone_num}}</h6>
+                                <h6 class="text-muted card-subtitle mb-2 mt-2"><strong>MESSAGE:</strong></h6>
+                                <p class="card-text">{{this.queryInfo.query_name}}</p>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>KEYWORDS IDENTIFIED:</strong></h6>
+                                <p class="card-text">{{this.queryInfo.key_words}}</p>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>POSSIBLE QUERIES:</strong></h6>
+                                <p class="card-text" v-if="this.queryInfo.intent == 0">
+                                    No Possible Queries Found
+                                    <br>
+                                </p>
+                                <p class="card-text" v-else>
+                                    {{this.queryInfo.intent}}
+                                </p>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
+                                <div v-if="this.queryInfo.intent != 0">
+                                    <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent">Sort to {{intent}}</a>
+                                </div>
                             </div>
                         </div>
-                        <input type="submit" value="Add New Faq " class="btn btn-primary btn-block text-white btn-user">
-                    </form>
-                </div>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,75 +85,23 @@
 
     export default {
         name:'UnidentifiedQueryList',
-        computed:mapGetters(['unidentifiedQuery','allCategories','userData','loadingSMS']),
+        computed:mapGetters(['unidentifiedQuery','otherpossiblecategory',]),
          data(){
             return{
-                faq:{
-                    faq_title:"",
-                    faq_answer:"",
-                    officer_id:"",
-                    category_id:"",
-                    faq_utterances:[]
-                },
-                error:{
-                    faq_title:"",
-                    faq_answer:"",
-                    officer_id:"",
-                    category_id:"",
-                    faq_utterances:"",
-                },
-                temptValue: '',
-                errorClass: 'border-danger',
-                hasNoError:true,
-                noUtternaces:false,
-                hasEmptyUtternaces:false,
-                faqEditID:null,
-                sms:{
-                    number:'',
-                    text:'',
-                    sms_id:null,
-                },
+               queryInfo:null, 
             }
         },
         methods: {
-            ...mapActions(['getUnidentifiedQuery','addNewFaqDashboard','sentMessageDashboard']), 
-            addFaq(e){
-                e.preventDefault();
-                this.hasNoError = true;
-                
-                this.faq.faq_title == "" ? (this.error.faq_title = true, this.hasNoError = false): this.error.faq_title = false;
-                this.faq.faq_answer == "" ? (this.error.faq_answer = true, this.hasNoError = false): this.error.faq_answer = false;
-                this.faq.category_id == "" ? (this.error.category_id = true, this.hasNoError = false): this.error.category_id = false;
-
-                if(!this.hasNoError){
-                    alert('Please Input All Fields');
-                }else{
-                    this.faq.faq_utterances.push({value:this.temptValue});
-                    const data = {
-                        faq:this.faq,
-                        id:this.faqEditID
-                    };
-                    this.sms.text = this.faq.faq_answer;
-
-                    console.log(this.sms);
-                    console.log(data.faq);
-
-                    this.addNewFaqDashboard(data.faq);
-                    this.sentMessageDashboard(this.sms);
-                    alert('SMS Send and Saved');
-
-                    router.go(router.currentRoute);
-
-                }
-            },
-            addNewFAQButton(unidentified){
-                this.temptValue = unidentified.query_name;
-                this.sms.number = unidentified.phone_num;
-                this.faq.officer_id = this.userData._id;
+            ...mapActions(['getUnidentifiedQuery','getOtherPossibleCategory']), 
+            unknownFAQButton(unidentified){
+                console.log(unidentified)
+                this.queryInfo = this.otherpossiblecategory.find(e=>e._id == unidentified._id);
             }
         },
         created(){
-            window.addEventListener('load', this.getUnidentifiedQuery())
+            window.addEventListener('load', this.getOtherPossibleCategory())
+            console.log('here')
+            console.log(this.otherpossiblecategory);
         }
     }
 </script>

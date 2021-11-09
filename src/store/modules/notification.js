@@ -18,8 +18,9 @@ const actions = {
 const mutations = {
     push_notification:(state,data)=>{
         const notification = {
-            message:data,
+            message:data.message,
             id:(Math.random().toString(36)+Date.now().toString(36)).substr(2),
+            isUnkown:data.isUnkown
         }
         state.notification.push(
             notification

@@ -6,7 +6,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                    <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar-x">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -112,9 +112,9 @@
 </script>
 
 <style>
-.my-custom-scrollbar {
+.my-custom-scrollbar-x {
     position: relative;
-    height: 600px;
+    height: 1000px;
     overflow: auto;
 }
 .table-wrapper-scroll-y {

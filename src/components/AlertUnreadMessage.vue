@@ -6,7 +6,7 @@
                 role="menu">
                     <h6 class="dropdown-header">Unread Messages</h6>
                     <div v-for="unread in unReadMessage" :key="unread._id">
-                        <a class="d-flex align-items-center dropdown-item" href="#">
+                        <a class="d-flex align-items-center dropdown-item" href="/message">
                             <div class="font-weight-bold">
                                 <div class="text-truncate"><span>{{unread.message}}</span></div>
                                 <p class="small text-gray-500 mb-0">{{unread.student_phone}} - {{moment(unread.createdAt).fromNow()}}</p>

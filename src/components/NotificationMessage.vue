@@ -1,5 +1,5 @@
 <template>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-dismissible fade show" :class="notification.isUnkown ? 'alert-danger' : 'alert-success'" role="alert-primary">
         <strong>{{notification.message}}</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="closeNotif(notification.id)">
             <span aria-hidden="true">&times;</span>
@@ -8,16 +8,14 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapActions} from 'vuex';
     export default {
        name:'NotificationMessage', 
-       computed:mapGetters(['allNotification']),
        props:['notification'],
        methods:{
            ...mapActions(['deleteNotification']), 
            closeNotif(id){
                this.deleteNotification(id);
-               console.log(this.allNotification);
            }
        }
     }
