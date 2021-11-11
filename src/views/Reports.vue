@@ -16,6 +16,35 @@
             <OtherQueryList/>
         </div>
         <div v-else>
+            <div class="card mb-2">
+                <div class="card-body">
+                     <p class="mt-3">
+                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Filters
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row mt-3">
+                                    <div class="col">
+                                        <ul class="">
+                                            <li class="list-group-item"><input type="checkbox" value="coc" v-model="allSchool" @change="getSchoolAndCourse()">Cagayan De Oro College</li>
+                                            <li class="list-group-item"><input type="checkbox" value="ustp" v-model="allSchool" @change="getSchoolAndCourse()">University Of Science and Technology of Southern Philippines</li>
+                                            <li class="list-group-item"><input type="checkbox" value="xavier" v-model="allSchool" @change="getSchoolAndCourse()">Xavier University</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul>
+                                            <li class="list-group-item"><input type="checkbox" value="bsit" v-model="allCourse" @change="getSchoolAndCourse()">BSIT</li>
+                                            <li class="list-group-item"><input type="checkbox" value="bschem" v-model="allCourse" @change="getSchoolAndCourse()">BSCHEM</li>
+                                            <li class="list-group-item"><input type="checkbox" value="bsee" v-model="allCourse" @change="getSchoolAndCourse()">BSEE</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6 col-xl-3 mb-4">
                     <div class="card shadow border-left-success py-2">
@@ -95,11 +124,72 @@ export default {
             dateNow:new Date,
             dataNow:[],
             dataMonth:[],
-            tableData:[]
+            tableData:[],
+            allSchool:[],
+            allCourse:[],
         }
     },
      methods: {
          ...mapActions(['getAllQueries','getQueriesBaseOnCategory','getOtherPossibleCategory','getAllCategory']), 
+
+            getSchoolAndCourse(){
+                if(this.category == 'all'){
+                    console.log(this.allCourse);
+
+                    let tempList = this.allQueries;
+
+                    if(this.allSchool.length != 0){
+                        tempList = tempList.filter(e=>e.student);
+                        console.log(tempList);
+                        tempList = tempList.filter((el) => {
+                            return this.allSchool.some((f) => {
+                                return f.toLowerCase() === el.student.school.toLowerCase();
+                            });
+                        });
+                    }
+
+                    if(this.allCourse.length != 0){
+                        tempList = tempList.filter(e=>e.student);
+                        tempList = tempList.filter((el) => {
+                            return this.allCourse.some((f) => {
+                                return f.toLowerCase() === el.student.course.toLowerCase()
+                            });
+                        });
+                    }
+
+                    this.categoryList = tempList
+                }else{
+
+                    let tempList = this.allQueries.filter(e=>e.category_id === this.category);
+
+                    if(this.allSchool.length != 0){
+                        tempList = tempList.filter(e=>e.student);
+                        tempList = tempList.filter((el) => {
+                            return this.allSchool.some((f) => {
+                                return f.toLowerCase() === el.student.school.toLowerCase();
+                            });
+                        });
+                    }
+
+                    if(this.allCourse.length != 0){
+                        tempList = tempList.filter(e=>e.student);
+                        tempList = tempList.filter((el) => {
+                            return this.allCourse.some((f) => {
+                                return f.toLowerCase() === el.student.course.toLowerCase()
+                            });
+                        });
+                    }
+
+                    this.categoryList = tempList
+                }
+
+                this.dataNow = this.getRecentData(this.categoryList);
+                this.dataMonth = this.getMonthData(this.categoryList);
+                this.tableData = this.categoryList;
+                this.getLabels(1);
+                this.getData(1);
+
+            },
             onClick(){
 
                 this.categoryOther = this.allCategories.find(e=> e.category_name == 'others')._id;
