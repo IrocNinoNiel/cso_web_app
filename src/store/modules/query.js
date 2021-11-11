@@ -1,5 +1,6 @@
 import axios from "axios";
 import VueCookies from 'vue-cookies'
+import router from '@/router'
 
 const state = {
     queries:[],
@@ -41,6 +42,14 @@ const actions = {
         const response = await axios.get(`/api/query/showpossiblecategory`, {headers:{Authorization: token}});
         console.log(response.data)
         commit('getOtherPossibleCategoryMutate',response.data.query_list)
+    },
+    async changeCategoryofQuery({commit,dispatch},data){
+        const token = VueCookies.get('Token');
+        const response = await axios.post(`/api/query/changequerycategory/${data.id}`,{data}, {headers:{Authorization: token}});
+
+        dispatch('getAllQueries');
+        dispatch('getOtherPossibleCategory');
+        commit('changeCategoryofQueryMutate',response.data)
     }
 };
 
@@ -57,6 +66,9 @@ const mutations = {
     },
     getOtherPossibleCategoryMutate:(state,data)=>{
         state.otherpossiblecategory = data
+    },
+    changeCategoryofQueryMutate:(state,data)=>{
+        alert(data.message)
     }
 };
 

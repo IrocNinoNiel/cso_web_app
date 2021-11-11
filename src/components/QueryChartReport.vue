@@ -1,13 +1,13 @@
 <template>
-    <div class="col-lg-5 col-xl-5 col">
-        <div class="row d-flex flex-column">
+    <div class="row">
+        <div class="col-6">
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <canvas id="query-chart"></canvas>
                 </div>
             </div>
         </div>
-        <div class="row d-flex flex-column">
+        <div class="col-6">
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <canvas id="query-chart1"></canvas>

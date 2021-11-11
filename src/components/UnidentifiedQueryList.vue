@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <!-- Add New FAQ -->
+        <!-- Details modal -->
         <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
              <div class="modal-dialog" role="document">
                 <div class="modal-content">

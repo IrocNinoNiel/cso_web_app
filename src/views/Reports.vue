@@ -63,11 +63,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div>
                 <QueryChartReport :chartLabels="label" :chartData="data"/>
-                <div class="col">
-                    <TableStudentReport :queryTableList="tableData"/>
-                </div>
+            </div>
+            <div class="row">
+                <TableStudentReport :queryTableList="tableData"/>
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@ export default {
         }
     },
      methods: {
-         ...mapActions(['getAllQueries','getQueriesBaseOnCategory','getOtherPossibleCategory']), 
+         ...mapActions(['getAllQueries','getQueriesBaseOnCategory','getOtherPossibleCategory','getAllCategory']), 
             onClick(){
 
                 this.categoryOther = this.allCategories.find(e=> e.category_name == 'others')._id;
@@ -150,6 +150,9 @@ export default {
             },
             loadData(){
                 this.getAllQueries();
+                this.getAllQueries();
+                this.getAllCategory();
+                this.getOtherPossibleCategory();
             },
             getRecentData(query){
                 return query.filter(e=>new Date(e.createdAt).getDate() === new Date().getDate())
@@ -167,11 +170,9 @@ export default {
                 }
             }
     },
-    mounted() {
-        // console.log(new Date(this.allQueries[0].createdAt).getDate());
-        // console.log(new Date().getDate());
-        // console.log(moment().format('W'))
+    created() {
         this.getAllQueries();
+        this.getAllCategory();
         this.getOtherPossibleCategory();
     },
     created(){

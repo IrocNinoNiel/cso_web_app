@@ -8,24 +8,37 @@
                 <table class="table dataTable my-0" id="dataTable">
                     <thead>
                         <tr>
+                            <th>Mobile Number</th>
                             <th>Student ID</th>
                             <th>School</th>
                             <th>Course</th>
-                            <th>Mobile Number</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="student in allStudent" :key="student._id">
                             <td>
                                 <button class="btn" @click="getInfoModal(student)" data-toggle="modal" data-target="#infoModal">
-                                    {{student._id}}
+                                    {{student.phone_num}}
                                 </button>
                             </td>
-                            <td>{{student.school}}</td>
-                            <td>{{student.course}}</td>
-                            <td>{{student.phone_number}}</td>
-                            
+                            <td v-if="student.student">
+                                {{student.student.student_id}}
+                            </td>
+                            <td v-else>
+                                no data
+                            </td>
+                            <td v-if="student.student">
+                                {{student.student.school}}
+                            </td>
+                             <td v-else>
+                                no data
+                            </td>
+                            <td v-if="student.student">
+                                {{student.student.course}}
+                            </td>
+                             <td v-else>
+                                no data
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -61,25 +74,33 @@ export default {
         }
     },
     components:{StudentQueryTable},
-    computed:mapGetters(['allStudent','allQueries']),
+    computed:mapGetters(['allStudent','allQueries','oneStudent']),
     methods: {
-        ...mapActions(['getAllStudents','deleteStudent','getOneStudent','getAllQueries']), 
+        ...mapActions(['deleteStudent','getOneStudent','getAllQueries','getInquirer']), 
         getInfoModal(student){
             this.getAllQueries();
 
-            this.student.id = student._id;
-            this.student.school = student.school;
-            this.student.course = student.course;
-            this.student.phone_num = student.phone_number;
-            
-            this.queryStudentList = this.allQueries.filter(e=>e.phone_num == this.student.phone_num);
+            if(student.student != null){
+                this.student.id = student.student.student_id;
+                this.student.school = student.student.school;
+                this.student.course = student.student.course;
+                this.student.phone_num = student.student.phone_number;
+            }else{
+                this.student.id = 'no data';
+                this.student.school = 'no data';
+                this.student.course = 'no data';
+                this.student.phone_num = 'no data';
+            }
 
-            this.countTotalKnownQuery = this.queryStudentList.filter(e=>e.faq_id != null).length;
-            this.countTotalUnknownQuery = this.queryStudentList.filter(e=>e.faq_id === null).length;
+            
+            this.queryStudentList = this.allQueries.filter(e=>e.phone_num == student.phone_num);
+
+            this.countTotalKnownQuery = this.queryStudentList.filter(e=>e.category.category_name !== 'others').length;
+            this.countTotalUnknownQuery = this.queryStudentList.filter(e=>e.category.category_name === 'others').length;
         }
     },
     created(){
-        this.getAllStudents();
+        this.getInquirer();
         this.getAllQueries();
     }
 }

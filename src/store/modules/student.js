@@ -9,15 +9,20 @@ const state = {
 
 const getters = {
     allStudent:(state)=>state.students,
-    oneStudent:(state)=>state.student,
+    oneStudentQuery:(state)=>state.student,
 };
 
 const actions = {
-    async getAllStudents({commit}){
+    // async getAllStudents({commit}){
+    //     const token = VueCookies.get('Token');
+    //     const response = await axios.get("/api/students/show", {headers:{Authorization: token}});
+    //     // console.log(response.data);
+    //     commit('getAllStudentMutate',response.data.student_list)
+    // },
+    async getInquirer({commit}){
         const token = VueCookies.get('Token');
-        const response = await axios.get("/api/students/show", {headers:{Authorization: token}});
-        // console.log(response.data);
-        commit('getAllStudentMutate',response.data.student_list)
+        const response = await axios.get("/api/students/showinquirer", {headers:{Authorization: token}});
+        commit('getAllStudentMutate',response.data.records)
     },
     async registerNewStudent({commit}, data){
         const token = VueCookies.get('Token');
@@ -43,10 +48,10 @@ const actions = {
     },
     async getOneStudent({commit},id){
         const token = VueCookies.get('Token');
-        axios.get(`/api/students/show/${id}`,{headers:{authorization: token}})
+        axios.get(`/api/students/showinquirer/${id}`,{headers:{authorization: token}})
             .then((response)=> {
-                // console.log(response.data.Student);
-                commit('getOneStudentMutate',response.data.Student);
+                console.log(response.data);
+                commit('getOneStudentMutate',response.data.records);
             })
             .catch((errors) => {    
                 alert(errors.response.data.message)
