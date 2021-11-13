@@ -134,7 +134,7 @@ export default {
 
             getSchoolAndCourse(){
                 if(this.category == 'all'){
-                    console.log(this.allCourse);
+                    console.log(this.allQueries);
 
                     let tempList = this.allQueries;
 

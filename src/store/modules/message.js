@@ -79,6 +79,26 @@ const actions = {
         await axios.get(`/api/sms/changesmsstatus/${student_num}`, {headers:{Authorization: token}});
         // dispatch('getUnreadCurrentMessage')
         commit('makeUnreadReadMutate');
+    },
+    async sendBroadcastMessage({commit}, data){
+        const token = VueCookies.get('Token');
+        try{
+            commit('loadingSMSMutate',true);
+            axios.post(`/api/sms/sendbroadcastmessage/`, {data},{headers:{Authorization: token}})
+                .then(response=>{
+                    console.log(response);
+                    commit('sendBroadcastMutate',response.data.message);  
+                    commit('loadingSMSMutate',false);  
+                })
+                .catch(err=>{
+                    console.log(err)
+                    alert(err.message)
+                    commit('loadingSMSMutate',false);  
+
+                })
+        }catch(e){
+            alert(e.message);
+        }
     }
     
 };
@@ -110,6 +130,9 @@ const mutations = {
     },
     makeUnreadReadMutate:(state)=> {
         console.log('changes')
+    },
+    sendBroadcastMutate:(state,data)=>{
+        alert(data);
     }
 };
 

@@ -11,7 +11,7 @@
                 <ArchivedMessage/>
             </div>
             <div class="card-body" v-show="!toggle">
-                <!-- <BroadcastMessage/> -->
+                <BroadcastMessage/>
             </div>
         </div>    
     </div>

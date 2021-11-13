@@ -1,15 +1,18 @@
 <template>
     <div>
        <div class="broadcastinput">
-           <form action="#" class="bg-light">
+           <form action="#" class="bg-light" @submit="submitBroadCastMessage">
                 <div class="input-group">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"  v-model="broadcastMessage"></textarea>
                     <div class="input-group-append">
                         <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
                     </div>
                 </div>
             </form>
        </div>
+       <div v-if='loadingSMS' class="mb-2 mt-3">
+            <vueSpinner/>
+        </div>
        <p class="mt-3">
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Filters
@@ -17,24 +20,24 @@
         </p>
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
-                  <div class="row mt-3">
-                        <div class="col">
-                            <ul class="">
-                                <li class="list-group-item"><input type="checkbox">All Schools</li>
-                                <li class="list-group-item"><input type="checkbox">Cagayan De Oro College</li>
-                                <li class="list-group-item"><input type="checkbox">University Of Science and Technology of Southern Philippines</li>
-                                <li class="list-group-item"><input type="checkbox">Xavier University</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul>
-                                <li class="list-group-item"><input type="checkbox">All Courses</li>
-                                <li class="list-group-item"><input type="checkbox">BSIT</li>
-                                <li class="list-group-item"><input type="checkbox">BS CHEM</li>
-                                <li class="list-group-item"><input type="checkbox">BS EE</li>
-                            </ul>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <ul class="">
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchoolCheck" value="all" >All Schools</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="COC" :disabled="allSchoolCheck">Cagayan De Oro College</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="USTP" :disabled="allSchoolCheck">University Of Science and Technology of Southern Philippines</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="XU" :disabled="allSchoolCheck">Xavier University</li>
+                        </ul>
                     </div>
+                    <div class="col">
+                        <ul>
+                            <li class="list-group-item"><input type="checkbox" value="all" v-model="allCourseCheck">All Courses</li>
+                            <li class="list-group-item"><input type="checkbox" value="BSIT" v-model="allCourse" :disabled="allCourseCheck">BSIT</li>
+                            <li class="list-group-item"><input type="checkbox" value="BSCHEM" v-model="allCourse" :disabled="allCourseCheck">BS CHEM</li>
+                            <li class="list-group-item"><input type="checkbox" value="BSEE" v-model="allCourse" :disabled="allCourseCheck">BS EE</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -42,8 +45,53 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
+    import Spinner from 'vue-simple-spinner';
     export default {
         name:"BroadcastMessage",
+        computed:mapGetters(['loadingSMS']),
+        components: {
+            vueSpinner: Spinner
+        },
+        data() {
+            return {
+                allSchool:[],
+                allCourse:[],
+                allSchoolCheck:true,
+                allCourseCheck:true,
+                broadcastMessage:''
+            }
+            
+        },
+        methods:{
+            ...mapActions(['sendBroadcastMessage']),
+            submitBroadCastMessage(e){
+                e.preventDefault();
+                console.log('here');
+    
+                console.log(this.allSchool.length);
+                console.log(this.allCourse.length);
+                if((!this.allSchoolCheck && this.allSchool.length == 0 )|| (!this.allCourseCheck && this.allCourse.length == 0)){
+                    alert('Please Add Filter')
+                }else{
+                    const schoolFilter = this.allSchoolCheck ? [] : this.allSchool;
+                    const courseFilter = this.allCourseCheck ? [] : this.allCourse;
+
+                    if(this.broadcastMessage.length < 1){
+                        alert('Empty Broadcast Message');
+                    }else{
+                        const data = {
+                            message: this.broadcastMessage,
+                            school:schoolFilter,
+                            course:courseFilter,
+                        }
+                        this.sendBroadcastMessage(data);
+                        this.broadcastMessage = '';
+                    }
+                }
+
+                
+            }
+        }
         
     }
 </script>
