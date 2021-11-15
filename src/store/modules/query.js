@@ -69,6 +69,7 @@ const mutations = {
     },
     changeCategoryofQueryMutate:(state,data)=>{
         alert(data.message)
+        router.go(router.currentRoute);
     }
 };
 

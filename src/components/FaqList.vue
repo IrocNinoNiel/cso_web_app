@@ -1,7 +1,27 @@
 <template>
     <div>
+        <div class="card mb-2">
+                <div class="card-body">
+                     <p class="mt-3">
+                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Filters
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row mt-3">
+                                    <div class="col">
+                                        <ul class="">
+                                            <li class="list-group-item" v-for="category in allCategories" :key="category._id"><input type="checkbox" :value="category.category_name" v-model="allCategory" @change="getFAQByCategory()">{{category.category_name}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="row">
-            <div class="col-md-6 col-xl-3 mb-4" v-for="faq in allFaq" :key="faq._id">
+            <div class="col-md-6 col-xl-3 mb-4" v-for="faq in faqList" :key="faq._id">
                 <div class="card shadow border-left-primary py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
@@ -128,7 +148,9 @@
                 hasNoError:true,
                 noUtternaces:false,
                 hasEmptyUtternaces:false,
-                faqEditID:null
+                faqEditID:null,
+                faqList:[],
+                allCategory:[],
             }
         },
         methods: {
@@ -136,6 +158,7 @@
             deleteOneFaq(id){
                 console.log(id)
                 if(confirm('Are you sure?')){
+                    this.faqList = this.faqList.filter(e=>e._id !== id);
                     this.deleteFaq(id);
                 }
             },
@@ -186,11 +209,41 @@
             },
             deleteUtterances: function(index){
                 this.faq.faq_utterances.splice(index,1);
+            },
+            loadCategory(){
+                this.getAllFaqs();
+                this.getAllCategory();
+                this.faqList = this.allFaq
+            },
+            getFAQByCategory(){
+                console.log(this.allCategory)
+                if(this.allCategory.length == 0){
+                    this.faqList = this.allFaq
+                }else{
+                    this.faqList = this.allFaq.filter((el) => {
+                        return this.allCategory.some((f) => {
+                            return f.toLowerCase() === el.category.category_name.toLowerCase();
+                        });
+                    });
+
+                    console.log(this.faqList);
+                }
             }
         },
         mounted(){
             this.getAllFaqs();
             this.getAllCategory();
+            this.faqList = this.allFaq
+            console.log('mounted')
+            console.log(this.allFaq);
+        },
+        created(){
+            window.addEventListener('load', this.loadCategory)
+            this.getAllFaqs();
+            this.getAllCategory();
+            console.log('created')
+            console.log(this.allFaq);
+            this.faqList = this.allFaq
         }
     }
 </script>

@@ -131,7 +131,6 @@ export default {
     },
      methods: {
          ...mapActions(['getAllQueries','getQueriesBaseOnCategory','getOtherPossibleCategory','getAllCategory']), 
-
             getSchoolAndCourse(){
                 if(this.category == 'all'){
                     console.log(this.allQueries);

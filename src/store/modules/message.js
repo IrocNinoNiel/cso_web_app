@@ -1,5 +1,6 @@
 import axios from "axios";
 import VueCookies from 'vue-cookies'
+import router from '@/router'
 
 const state = {
     messages:[],
@@ -99,7 +100,19 @@ const actions = {
         }catch(e){
             alert(e.message);
         }
-    }
+    },
+    async sentMessageAnswerQuery({commit},data){
+        const token = VueCookies.get('Token');
+        commit('loadingSMSMutate',true);
+        axios.post('/api/sms/sendqueryanswer', {data}, {headers:{authorization: token}})
+            .then((response) => {   
+                commit('sentMessageAnswerQueryMutate',response.data.message);  
+                commit('loadingSMSMutate',false);  W
+            })    
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+            }) 
+    },
     
 };
 
@@ -133,6 +146,10 @@ const mutations = {
     },
     sendBroadcastMutate:(state,data)=>{
         alert(data);
+    },
+    sentMessageAnswerQueryMutate:(state,data)=>{
+        alert(data);
+        router.go(router.currentRoute);
     }
 };
 

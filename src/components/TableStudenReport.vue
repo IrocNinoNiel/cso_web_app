@@ -49,9 +49,11 @@
                                 <h6 class="card-text">{{this.queryInfo.phone_num}}</h6>
                                 <h6 class="text-muted card-subtitle mb-2 mt-2"><strong>MESSAGE:</strong></h6>
                                 <p class="card-text">{{this.queryInfo.query_name}}</p>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>Date:</strong></h6>
+                                <p class="card-text">{{moment(this.queryInfo.createdAt).format("MMM D, YYYY")}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>Category:</strong></h6>
                                 <p class="card-text">{{this.queryInfo.category.category_name}}</p>
-                                <h6 class="text-muted card-subtitle mb-2"><strong>POSSIBLE ANSWER:</strong></h6>
+                                <h6 class="text-muted card-subtitle mb-2"><strong>MESSAGE REPLY:</strong></h6>
                                 <p class="card-text" >
                                     {{this.queryInfo.possible_answer}}
                                 </p>
@@ -59,6 +61,21 @@
                                 <p class="card-text" >
                                     {{moment(this.queryInfo.createdAt).format("MMMM D, YYYY")}}
                                 </p>
+                                <hr>
+                                <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">
+                                    <h6 class="text-muted card-subtitle mb-2"><strong>SEND ANSWER:</strong></h6>
+                                    <form action="#" class="bg-light" @submit="sendAnswer">
+                                        <div class="input-group">
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="messageAnswer" ></textarea>
+                                            <div class="input-group-append">
+                                                <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div v-if='loadingSMS' class="mb-2 mt-3">
+                                        <vueSpinner/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,18 +87,34 @@
 </template>
 
 <script>
+    import {mapActions, mapGetters} from 'vuex';
+    import Spinner from 'vue-simple-spinner';
     export default {
         name:'TableStudentReport',
         props: ['queryTableList'],
+        computed:mapGetters(['loadingSMS']),
+        components: {
+            vueSpinner: Spinner
+        },
         data(){
             return{
                queryInfo:null, 
+               messageAnswer:''
             }
         },
         methods:{
+            ...mapActions(['sentMessageAnswerQuery']),
             tableDetails(data){
                 console.log(data);
                 this.queryInfo = data;
+            },
+            sendAnswer(e){
+                e.preventDefault();
+                let data = {
+                    message:this.messageAnswer,
+                    query_info:this.queryInfo
+                }
+                this.sentMessageAnswerQuery(data);
             }
         }
     }

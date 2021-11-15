@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="info-modal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Student Information</h5>
@@ -42,7 +42,8 @@
                             <tr>
                                 <th>Query</th>
                                 <th>Category</th>
-                                <th>Possible Answer</th>
+                                <th>Message Reply</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,6 +51,7 @@
                                 <td>{{query.query_name}}</td>
                                 <td>{{query.category.category_name}}</td>
                                 <td>{{query.possible_answer}}</td>
+                                <td>{{moment(query.createdAt).format("MMM D, YYYY")}}</td>
                             </tr>
                         </tbody>
                         <tfoot>
