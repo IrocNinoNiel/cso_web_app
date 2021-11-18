@@ -79,11 +79,26 @@ const actions = {
                 console.log(errors);
                 alert(errors)
             }) 
-    }
+    },
+    async getFaqByCategory({commit},data){
+        const token = VueCookies.get('Token');
+        axios.post(`/api/FAQ/showfaqbycategory`,{data},{headers:{authorization: token}})
+            .then((response)=> {
+                console.log(response.data.faq_list);
+                commit('getFaqByCategoryMutate',response.data.faq_list)
+            })
+            .catch((errors) => {    
+                alert(errors.response.data.message)
+            }) 
+    },
 };
 
 const mutations = {
     getAllFAQMutate:(state,data)=>{
+        state.faqs = data
+        console.log(state.faqs);
+    },
+    getFaqByCategoryMutate:(state,data)=>{
         state.faqs = data
         console.log(state.faqs);
     },

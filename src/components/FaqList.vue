@@ -12,7 +12,7 @@
                             <div class="row mt-3">
                                     <div class="col">
                                         <ul class="">
-                                            <li class="list-group-item" v-for="category in allCategories" :key="category._id"><input type="checkbox" :value="category.category_name" v-model="allCategory" @change="getFAQByCategory()">{{category.category_name}}</li>
+                                            <li class="list-group-item" v-for="category in allCategories" :key="category._id"><input type="checkbox" :value="category._id" v-model="allCategory" @change="getFAQByCategory()">{{category.category_name}}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         <div class="row">
-            <div class="col-md-6 col-xl-3 mb-4" v-for="faq in faqList" :key="faq._id">
+            <div class="col-md-6 col-xl-3 mb-4" v-for="faq in allFaq" :key="faq._id">
                 <div class="card shadow border-left-primary py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
@@ -154,7 +154,7 @@
             }
         },
         methods: {
-            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq','editOneFaq','getAllCategory']), 
+            ...mapActions(['getAllFaqs','deleteFaq','getOneFaq','editOneFaq','getAllCategory','getFaqByCategory']), 
             deleteOneFaq(id){
                 console.log(id)
                 if(confirm('Are you sure?')){
@@ -213,20 +213,26 @@
             loadCategory(){
                 this.getAllFaqs();
                 this.getAllCategory();
-                this.faqList = this.allFaq
+                // this.faqList = this.allFaq
             },
             getFAQByCategory(){
-                console.log(this.allCategory)
                 if(this.allCategory.length == 0){
-                    this.faqList = this.allFaq
+                    console.log('here');
+                    this.getAllFaqs();
+                    console.log(this.allFaq);
                 }else{
-                    this.faqList = this.allFaq.filter((el) => {
-                        return this.allCategory.some((f) => {
-                            return f.toLowerCase() === el.category.category_name.toLowerCase();
-                        });
-                    });
+                    console.log(this.allCategory);
+                    // this.faqList = this.allFaq.filter((el) => {
+                    //     return this.allCategory.some((f) => {
+                    //         return f.toLowerCase() === el.category.category_name.toLowerCase();
+                    //     });
+                    // });
 
-                    console.log(this.faqList);
+                    // console.log(this.faqList);
+                    const data = {
+                        category_id:this.allCategory
+                    }
+                    this.getFaqByCategory(data);
                 }
             }
         },
