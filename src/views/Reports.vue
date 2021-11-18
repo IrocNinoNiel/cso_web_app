@@ -244,7 +244,8 @@ export default {
                 this.getOtherPossibleCategory();
             },
             getRecentData(query){
-                return query.filter(e=>new Date(e.createdAt).getDate() === new Date().getDate())
+                const tempList = query.filter(e=>new Date(e.createdAt).getMonth() === new Date().getMonth())
+                return tempList.filter(e=>new Date(e.createdAt).getDate() === new Date().getDate())
             },
             getMonthData(query){
                 return query.filter(e=>new Date(e.createdAt).getMonth() === new Date().getMonth())

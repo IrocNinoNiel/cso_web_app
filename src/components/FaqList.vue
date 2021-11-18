@@ -12,7 +12,7 @@
                             <div class="row mt-3">
                                     <div class="col">
                                         <ul class="">
-                                            <li class="list-group-item" v-for="category in allCategories" :key="category._id"><input type="checkbox" :value="category._id" v-model="allCategory" @change="getFAQByCategory()">{{category.category_name}}</li>
+                                            <li class="list-group-item" v-for="category in getCategories" :key="category._id"><input type="checkbox" :value="category._id" v-model="allCategory" @change="getFAQByCategory()">{{category.category_name}}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <select class="form-control " id="faq_category" v-model="faq.category_id" :class="[error.category_id ? errorClass : '']">
-                                <option :value="category._id" v-for="category in allCategories" :key="category._id">{{category.category_name}}</option>
+                                <option :value="category._id" v-for="category in getCategories" :key="category._id">{{category.category_name}}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -127,7 +127,11 @@
     import router from "../router"  
     export default {
         name:"faqlist",
-        computed:mapGetters(['allFaq','allCategories']),
+        computed:{...mapGetters(['allFaq','allCategories']),
+            getCategories:function(){
+                return this.allCategories.filter(e=>e.category_name !== 'others');
+            }
+        },
         data(){
             return{
                 faq:{

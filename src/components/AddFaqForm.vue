@@ -6,7 +6,8 @@
             </div>
             <div class="form-group">
                 <select class="form-control " id="faq_category" v-model="faq.category_id" :class="[error.category_id ? errorClass : '']">
-                    <option :value="category._id" v-for="category in allCategories" :key="category._id">{{category.category_name}}</option>
+                    <option :value="category._id" v-for="category in getCategories" :key="category._id">{{category.category_name}}</option>
+
                 </select>
             </div>
             <div class="form-group">
@@ -38,7 +39,12 @@
     import {mapActions, mapGetters} from 'vuex';
     export default {
         name:"AddFaqForm",
-        computed:mapGetters(['allFaq','userData','allCategories']),
+        computed:{
+            ...mapGetters(['allFaq','userData','allCategories']),
+            getCategories:function(){
+                return this.allCategories.filter(e=>e.category_name !== 'others');
+            }
+        },
         data(){
             return{
                 faq:{
