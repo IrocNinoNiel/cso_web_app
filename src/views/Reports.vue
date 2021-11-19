@@ -264,10 +264,8 @@ export default {
         this.getAllQueries();
         this.getAllCategory();
         this.getOtherPossibleCategory();
-    },
-    created(){
         window.addEventListener('load', this.loadData)
-    }
+    },
 }
 </script>
 

@@ -149,7 +149,8 @@
                 }
                 this.sentMessageAnswerQuery(data);
             }
-        }
+        },
+        
     }
 </script>
 
