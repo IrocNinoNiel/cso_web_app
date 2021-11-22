@@ -16,6 +16,7 @@ import AddFaq from '../views/AddFaq.vue'
 import EditFaq from '../views/EditFaq.vue'
 import ArchivedMessage from '../views/ArchivedMessage.vue'
 import Category from '../views/CategoryPage.vue';
+import SystemLog from '../views/SystemLog.vue';
 
 Vue.use(VueRouter)
 
@@ -99,6 +100,11 @@ const routes = [
         path: '/category',
         name: 'Category',
         component: Category
+      },
+      {
+        path: '/systemlog',
+        name: 'SystemLog',
+        component: SystemLog
       }
 
     ]

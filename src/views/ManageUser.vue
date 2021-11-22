@@ -47,13 +47,33 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex';
+import router from '@/router'
+import VueCookies from 'vue-cookies'
+import axios from "axios";
 export default {
     name:'ManageUser',
     computed:mapGetters(['allUsers']),
     methods: {
          ...mapActions(['fetchUsers']), 
+        getUserData1: function() {  
+            console.log(VueCookies.get('Token'))     
+            axios.get("/api/users/dashboard", {headers:{
+                Authorization: VueCookies.get('Token')
+            }})    
+                .then((response) => {    
+                    if(response.data.user_role !== 'admin'){
+                        router.push("/")    
+                    }
+                    // self.$set(this, "user", response.data.user)    
+                })    
+                .catch((errors) => {    
+                    console.log(errors)    
+                    router.push("/login")    
+                })    
+        },
     },
      mounted() {
+        this.getUserData1();
         this.fetchUsers();
     }
 }

@@ -7,7 +7,8 @@ const state = {
     user:{},
     datauser:{},
     errMsg:"",
-    hasRegisterError:false
+    hasRegisterError:false,
+    systemlog:[]
 };
 
 const getters = {
@@ -16,6 +17,7 @@ const getters = {
     userData: (state) => state.datauser,
     errorMessage:(state)=>state.errMsg,
     checkRegisterError:(state)=>state.hasRegisterError,
+    allSystemLog:(state)=>state.systemlog,
 };
 
 const actions = {
@@ -29,8 +31,9 @@ const actions = {
         commit('getOne', data)
     },
     async getUserData({commit}, token){
-        const response = await axios.get("/api/users/dashboard", {headers:{Authorization: token}});
-        const getUser = await axios.get(`/api/users/show/${response.data._id}`, {headers:{Authorization: token}});
+        const token1 = VueCookies.get('Token');
+        const response = await axios.get("/api/users/dashboard", {headers:{Authorization: token1}});
+        const getUser = await axios.get(`/api/users/show/${response.data._id}`, {headers:{Authorization: token1}});
         commit('getData',getUser.data.user) ;
     },
     async deleteUserData({commit}){
@@ -105,7 +108,12 @@ const actions = {
                 // commit('errorRegister',errors.response.data)
                 // alert('Invalid Credentials')
             }) 
-    }
+    },
+    async getSystemLog({ commit }){
+        const token = VueCookies.get('Token');
+        const response = await axios.get('/api/users/systemlog', {headers:{Authorization: token}})
+        commit('getSystemLogMutate',response.data.users);
+    },
 
 };
 
@@ -135,6 +143,9 @@ const mutations = {
     editedUserInfoMutate:(state,data)=>{
         alert('User Information Edited Succesfully')
         router.go(router.currentRoute);
+    },
+    getSystemLogMutate:(state,data)=>{
+        state.systemlog = data;
     }
     
 };

@@ -43,13 +43,19 @@
                         <li class="nav-item dropdown no-arrow" role="presentation">
                           <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{this.userData.first_name +' '+this.userData.last_name}}</span>
                         
-                          <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
-                          </a>
-                            <div
-                                class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href="/profile"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" role="presentation" v-on:click="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
-                            </div>
+                            <img src="@/assets/img/avatars/profile.jpg/" class="border rounded-circle img-profile">
+                            </a>
+                              <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
+                                  <a class="dropdown-item" role="presentation" href="/profile">
+                                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                  <div v-show="this.userData.user_role == 'admin'">
+                                    <a class="dropdown-item" role="presentation" href="systemlog">
+                                    <i class="fas fa-clipboard-check"></i>&nbsp;System Log</a>
+                                  </div>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" role="presentation" v-on:click="logout">
+                                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                              </div>
                           </div>
                         </li>
                       </ul>
