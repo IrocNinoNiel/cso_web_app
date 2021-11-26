@@ -47,24 +47,32 @@
                             </div>
                         </div>
                     </div> -->
+                    
                     <div class="row">
                         <div class="col col-8">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col">
                                     <QueryChart/>
                                 </div>
                             </div>
                             <div class="row mr-2">
                                 <QueryListTable/>
+                            </div> -->
+
+                            <div class="row mr-2">
+                                <DashboardUnidentifiedChart/>
+                            </div>
+                            <div class="row mr-2">
+                                <DashboardUnidentifiedQueryTable/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="row">
                                 <UnidentifiedQueryList/>
                             </div>
-                            <div class="row mt-2">
+                            <!-- <div class="row mt-2">
                                 <DashboardMessage/>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <!-- <div class="mb-5">
@@ -99,12 +107,13 @@ import QueryListTable from '../components/QueryListTable.vue';
 import SpecifiedConcernList from '../components/SpecifiedConcernList.vue';
 import QueryChart from '../components/QueryChart.vue';
 import UnidentifiedQueryList from '../components/UnidentifiedQueryList.vue'
-
+import DashboardUnidentifiedChart from '../components/DashboardUnidentifiedChart.vue'
+import DashboardUnidentifiedQueryTable from '../components/DashboardUnidentifiedQueryTable.vue'
 
 export default {
     name: 'Home',
     computed:mapGetters(['allQueries']),
-    components:{QueryListTable,SpecifiedConcernList,QueryChart,DashboardMessage,UnidentifiedQueryList},
+    components:{QueryListTable,SpecifiedConcernList,QueryChart,DashboardMessage,UnidentifiedQueryList,DashboardUnidentifiedChart,DashboardUnidentifiedQueryTable},
 
     methods: {
         ...mapActions(['getAllQueries']), 
