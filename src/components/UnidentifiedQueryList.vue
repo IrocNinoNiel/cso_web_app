@@ -9,8 +9,6 @@
                     <div class="messages-box messageContainerClass">
                         <div class="list-group rounded-0">
                             <div v-for="unidentified in otherpossiblecategory" :key="unidentified._id">
-                                <!-- {{unidentified}} -->
-                                <!-- active text-white -->
                                 <a class="list-group-item list-group-item-action rounded-0">
                                     <div class="media">
                                         <div class="media-body ml-4">
@@ -106,7 +104,7 @@
     import Spinner from 'vue-simple-spinner';
     export default {
         name:'UnidentifiedQueryList',
-        computed:mapGetters(['unidentifiedQuery','otherpossiblecategory','loadingSMS']),
+        computed:mapGetters(['otherpossiblecategory','loadingSMS']),
         components: {
             vueSpinner: Spinner
         },
@@ -117,7 +115,7 @@
             }
         },
         methods: {
-            ...mapActions(['getUnidentifiedQuery','getOtherPossibleCategory','changeCategoryofQuery','sentMessageAnswerQuery']), 
+            ...mapActions(['getOtherPossibleCategory','changeCategoryofQuery','sentMessageAnswerQuery']), 
             unknownFAQButton(unidentified){
                 console.log(unidentified)
                 this.queryInfo = this.otherpossiblecategory.find(e=>e._id == unidentified._id);

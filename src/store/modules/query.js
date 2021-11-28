@@ -8,7 +8,9 @@ const state = {
     queriesBasedCategory:[],
     notPending:false,
     unidentifiedQuery:[],
-    otherpossiblecategory:[]
+    otherpossiblecategory:[],
+    unidentifiedQueryByMonth:[],
+    currentUnidentifedQuery:[],
 };
 
 const getters = {
@@ -17,7 +19,9 @@ const getters = {
     categoryQueries :(state)=>state.queriesBasedCategory,
     pending: (state)=>state.notPending,
     unidentifiedQuery:(state)=>state.unidentifiedQuery,
-    otherpossiblecategory:(state)=>state.otherpossiblecategory
+    otherpossiblecategory:(state)=>state.otherpossiblecategory,
+    unidentifiedQueryByMonth:(state)=>state.unidentifiedQueryByMonth,
+    currentUnidentifedQuery:(state)=>state.currentUnidentifedQuery,
 };
 
 const actions = {
@@ -50,7 +54,19 @@ const actions = {
         dispatch('getAllQueries');
         dispatch('getOtherPossibleCategory');
         commit('changeCategoryofQueryMutate',response.data)
-    }
+    },
+    async ShowUnidentifiedQueryByMonth({commit},data){
+        const token = VueCookies.get('Token');
+        const response = await axios.post(`/api/query/show-unidentified-query-by-month`,{data}, {headers:{Authorization: token}});
+
+        commit('showUnidentifiedQueryByMonthMutate',response.data.query_list)
+    },
+    async GetCurrentUnidentifiedQuery({commit},data){
+        const token = VueCookies.get('Token');
+        const response = await axios.post(`/api/query/get-current-unidentified-query`,{data}, {headers:{Authorization: token}});
+
+        commit('getCurrentUnidentifiedQueryMutate',response.data.query_list)
+    },
 };
 
 const mutations = {
@@ -70,6 +86,12 @@ const mutations = {
     changeCategoryofQueryMutate:(state,data)=>{
         alert(data.message)
         router.go(router.currentRoute);
+    },
+    showUnidentifiedQueryByMonthMutate:(state,data)=>{
+        state.unidentifiedQueryByMonth = data;
+    },
+    getCurrentUnidentifiedQueryMutate:(state,data)=>{
+        state.currentUnidentifedQuery = data
     }
 };
 
