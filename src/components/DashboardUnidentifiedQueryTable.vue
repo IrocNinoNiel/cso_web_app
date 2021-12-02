@@ -135,7 +135,7 @@
                                 </p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
                                 <div v-if="this.queryInfo.intent != 0">
-                                    <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Sort to {{intent}}</a>
+                                    <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Assign to {{intent}}</a>
                                 </div>
                                 <hr>
                                 <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">
@@ -167,6 +167,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
+import Spinner from 'vue-simple-spinner';
 export default {
     name: 'DashboardUnidentifiedQueryTable',
     computed:{
@@ -174,6 +175,9 @@ export default {
         selectedCategoryFunction(){
             return this.currentUnidentifedQuery;
         }
+    },
+    components: {
+            vueSpinner: Spinner
     },
     data() {
         return{
@@ -184,7 +188,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory']),
+        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory','sentMessageAnswerQuery']),
         newSelectedCategory(){
             const data = {
                 category_name:this.selectedCategory,
@@ -209,8 +213,8 @@ export default {
                 message:this.messageAnswer,
                 query_info:this.queryInfo
             }
-            // this.sentMessageAnswerQuery(data);
-            console.log(data);
+            this.sentMessageAnswerQuery(data);
+            // console.log(data);
         }
     },
     created(){

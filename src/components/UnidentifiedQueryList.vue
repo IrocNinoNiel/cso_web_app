@@ -68,7 +68,7 @@
                                 </p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
                                 <div v-if="this.queryInfo.intent != 0">
-                                    <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Sort to {{intent}}</a>
+                                    <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Assign to {{intent}}</a>
                                 </div>
                                 <hr>
                                 <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">

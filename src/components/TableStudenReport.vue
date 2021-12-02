@@ -57,10 +57,6 @@
                                 <p class="card-text" >
                                     {{this.queryInfo.possible_answer}}
                                 </p>
-                                <h6 class="text-muted card-subtitle mb-2"><strong>Date:</strong></h6>
-                                <p class="card-text" >
-                                    {{moment(this.queryInfo.createdAt).format("MMMM D, YYYY")}}
-                                </p>
                                 <hr>
                                 <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">
                                     <h6 class="text-muted card-subtitle mb-2"><strong>SEND ANSWER:</strong></h6>
