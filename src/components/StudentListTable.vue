@@ -9,7 +9,7 @@
                     <thead>
                         <tr>
                             <th>Mobile Number</th>
-                            <th>Student ID</th>
+                            <th>Student Name</th>
                             <th>School</th>
                             <th>Course</th>
                         </tr>
@@ -22,7 +22,7 @@
                                 </button>
                             </td>
                             <td v-if="student.student">
-                                {{student.student.student_id}}
+                                {{student.student.first_name}} {{student.student.last_name}}
                             </td>
                             <td v-else>
                                 no data
@@ -66,7 +66,9 @@ export default {
                 id:null,
                 school:null,
                 course:null,
-                phone_num:null
+                phone_num:null,
+                first_name:null,
+                last_name:null,
             },
             countTotalKnownQuery:0,
             countTotalUnknownQuery:0,
@@ -85,11 +87,15 @@ export default {
                 this.student.school = student.student.school;
                 this.student.course = student.student.course;
                 this.student.phone_num = student.student.phone_number;
+                this.student.first_name = student.student.first_name;
+                this.student.last_name = student.student.last_name;
             }else{
                 this.student.id = 'no data';
                 this.student.school = 'no data';
                 this.student.course = 'no data';
                 this.student.phone_num = 'no data';
+                this.student.first_name = 'no data';
+                this.student.last_name = 'no data';
             }
 
             

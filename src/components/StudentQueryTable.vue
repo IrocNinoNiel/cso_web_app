@@ -11,7 +11,9 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col">
-                        <b>Student ID:</b><p>{{this.student.id}}</p>
+                        <b>Student Name:</b>
+                        <p v-if="this.student.first_name == 'no data'">no data</p>
+                        <p v-else>{{this.student.first_name}} {{this.student.last_name}}</p>
                     </div>
                     <div class="col">
                         <b>School</b><p>{{this.student.school}}</p>

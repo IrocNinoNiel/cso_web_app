@@ -29,14 +29,6 @@
                             <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="XU" :disabled="allSchoolCheck">Xavier University</li>
                         </ul>
                     </div>
-                    <div class="col">
-                        <ul>
-                            <li class="list-group-item"><input type="checkbox" value="all" v-model="allCourseCheck">All Courses</li>
-                            <li class="list-group-item"><input type="checkbox" value="BSIT" v-model="allCourse" :disabled="allCourseCheck">BSIT</li>
-                            <li class="list-group-item"><input type="checkbox" value="BSCHEM" v-model="allCourse" :disabled="allCourseCheck">BS CHEM</li>
-                            <li class="list-group-item"><input type="checkbox" value="BSEE" v-model="allCourse" :disabled="allCourseCheck">BS EE</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>

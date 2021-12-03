@@ -33,13 +33,13 @@
                                             <li class="list-group-item"><input type="checkbox" value="xavier" v-model="allSchool" @change="getSchoolAndCourse()">Xavier University</li>
                                         </ul>
                                     </div>
-                                    <div class="col">
+                                    <!-- <div class="col">
                                         <ul>
                                             <li class="list-group-item"><input type="checkbox" value="bsit" v-model="allCourse" @change="getSchoolAndCourse()">BSIT</li>
                                             <li class="list-group-item"><input type="checkbox" value="bschem" v-model="allCourse" @change="getSchoolAndCourse()">BSCHEM</li>
                                             <li class="list-group-item"><input type="checkbox" value="bsee" v-model="allCourse" @change="getSchoolAndCourse()">BSEE</li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                         </div>
                     </div>

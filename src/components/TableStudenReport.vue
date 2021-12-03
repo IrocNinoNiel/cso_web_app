@@ -42,7 +42,7 @@
                         <div class="card">
                             <div class="card-body" v-if="this.queryInfo != null">
                                 <h4 class="card-title">
-                                    <strong v-if="this.queryInfo.student">{{this.queryInfo.student.student_id}}</strong>
+                                    <strong v-if="this.queryInfo.student">{{this.queryInfo.student.first_name}} {{this.queryInfo.student.last_name}}</strong>
                                     <strong v-else>--</strong>
                                 </h4>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>Contact Number:</strong></h6>
