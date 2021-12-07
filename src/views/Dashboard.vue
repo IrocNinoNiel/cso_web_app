@@ -24,7 +24,7 @@
                     <router-link to="/table" class="nav-link"><i class="fas fa-bars"></i><span>Inquirer Records</span></router-link>
                     <router-link to="/reports" class="nav-link"><i class="icon ion-arrow-graph-up-right"></i><span>Reports</span></router-link>
                     <router-link to="/faq" class="nav-link"><i class="fas fa-question-circle"></i><span>FAQ's</span></router-link>
-                    <router-link to="/category" class="nav-link"><i class="fas fa-book"></i><span>FAQ Category</span></router-link>
+                    <router-link to="/category" class="nav-link"><i class="fas fa-book"></i><span>Category</span></router-link>
                     <a class="nav-link" v-on:click="logout"><i class="fas fa-arrow-left"></i><span>Log Out</span></a>
                 </li>
               <li class="nav-item" role="presentation"></li>

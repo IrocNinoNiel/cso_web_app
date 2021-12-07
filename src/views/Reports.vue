@@ -31,6 +31,11 @@
                                             <li class="list-group-item"><input type="checkbox" value="coc" v-model="allSchool" @change="getSchoolAndCourse()">Cagayan De Oro College</li>
                                             <li class="list-group-item"><input type="checkbox" value="ustp" v-model="allSchool" @change="getSchoolAndCourse()">University Of Science and Technology of Southern Philippines</li>
                                             <li class="list-group-item"><input type="checkbox" value="xavier" v-model="allSchool" @change="getSchoolAndCourse()">Xavier University</li>
+                                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="LC" @change="getSchoolAndCourse()">Lourdes College</li>
+                                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="LDCU" @change="getSchoolAndCourse()">Liceo De Cagayan University</li>
+                                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="SPC" @change="getSchoolAndCourse()">Southern Philippines College</li>
+                                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="CU" @change="getSchoolAndCourse()">Capitol University</li>
+                                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="PCC" @change="getSchoolAndCourse()">pilgrim christian college</li>
                                         </ul>
                                     </div>
                                     <!-- <div class="col">

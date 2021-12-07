@@ -27,6 +27,11 @@
                             <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="COC" :disabled="allSchoolCheck">Cagayan De Oro College</li>
                             <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="USTP" :disabled="allSchoolCheck">University Of Science and Technology of Southern Philippines</li>
                             <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="XU" :disabled="allSchoolCheck">Xavier University</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="LC" :disabled="allSchoolCheck">Lourdes College</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="LDCU" :disabled="allSchoolCheck">Liceo De Cagayan University</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="SPC" :disabled="allSchoolCheck">Southern Philippines College</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="CU" :disabled="allSchoolCheck">Capitol University</li>
+                            <li class="list-group-item"><input type="checkbox" v-model="allSchool" value="PCC" :disabled="allSchoolCheck">pilgrim christian college</li>
                         </ul>
                     </div>
                 </div>
