@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="card-body">
                     <div class="bg-gray px-4 py-2 bg-light">
-                        <p class="h5 mb-0 py-1">Recent Unidentified Query</p>
+                        <p class="h5 mb-0 py-1">Recent Uncategorized Query</p>
                     </div>
                     <div class="messages-box messageContainerClass">
                         <div class="list-group rounded-0">
@@ -118,6 +118,7 @@
             ...mapActions(['getOtherPossibleCategory','changeCategoryofQuery','sentMessageAnswerQuery']), 
             unknownFAQButton(unidentified){
                 console.log(unidentified)
+               
                 this.queryInfo = this.otherpossiblecategory.find(e=>e._id == unidentified._id);
             },
             changeCategory(id,intent){

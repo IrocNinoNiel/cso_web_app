@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col mr-2" @click="clickDate(0)">
                                 <button class="btn">
-                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Unidentified QUERIES</span></div>
+                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Uncategorized QUERIES</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(2)">
-                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Unidentified QUERIES This Month</span></div>
+                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Uncategorized QUERIES This Month</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(3)">
-                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Unidentified QUERIES This Week</span></div>
+                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Uncategorized QUERIES This Week</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(4)">
-                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Unidentified QUERIES this day</span></div>
+                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Uncategorized QUERIES this day</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -188,7 +188,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory','sentMessageAnswerQuery']),
+        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory','sentMessageAnswerQuery','changeCategoryofQuery']),
         newSelectedCategory(){
             const data = {
                 category_name:this.selectedCategory,
@@ -201,6 +201,8 @@ export default {
                 category_name:this.selectedCategory,
                 date:number
             }
+            
+            console.log(data);
             this.GetCurrentUnidentifiedQuery(data);
         },
         onClick(query){
@@ -215,7 +217,14 @@ export default {
             }
             this.sentMessageAnswerQuery(data);
             // console.log(data);
-        }
+        },
+        changeCategory(id,intent){
+            const data = {
+                id,
+                category_name:intent
+            }
+            this.changeCategoryofQuery(data);
+        },
     },
     created(){
 

@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-6 col-xl-3 mb-4" v-for="category in allCategories" :key="category._id">
-                <div class="card shadow border-left-primary py-2">
+                <div class="card shadow border-left-primary py-2" v-show="category.category_name !== 'others'">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col mr-2">

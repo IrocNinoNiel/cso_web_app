@@ -62,15 +62,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0 form-group">
-                                            <label for="gender"><strong>User Type</strong></label>
-                                            <select class="form-control rounded-pill`" id="user_role" v-model="userData.user_role" :disabled="editInformation ? false : true">
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group mt-5"><button class="btn btn-primary btn-sm" type="submit" :disabled="editInformation ? false : true">Save Settings</button></div>
                                 </form>
                             </div>

@@ -3,6 +3,34 @@
          <div class="card-header py-3">
             <p class="text-primary m-0 font-weight-bold">Student Info</p>
         </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                    <p class="mt-3">
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Filters
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <div class="row mt-3">
+                                <div class="col">
+                                    <ul class="">
+                                        <li class="list-group-item">
+                                            <input type="radio" name="all" id=""> All
+                                        </li>
+                                        <li class="list-group-item">
+                                            <input type="radio" name="student" id=""> Student
+                                        </li>
+                                        <li class="list-group-item">
+                                            <input type="radio" name="unspecified" id=""> Unspecified
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                 <table class="table dataTable my-0" id="dataTable">
