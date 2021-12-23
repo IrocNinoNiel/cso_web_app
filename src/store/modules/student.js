@@ -22,6 +22,7 @@ const actions = {
     async getInquirer({commit}){
         const token = VueCookies.get('Token');
         const response = await axios.get("/api/students/showinquirer", {headers:{Authorization: token}});
+        console.log(response.data.records);
         commit('getAllStudentMutate',response.data.records)
     },
     async registerNewStudent({commit}, data){
@@ -71,6 +72,21 @@ const actions = {
             .catch((errors) => {    
                 // alert(errors.response.data.message)
             }) 
+    },
+    async getFilteredList({commit},data){
+
+        const token = VueCookies.get('Token');
+        const id = router.currentRoute.params.id
+
+        axios.post(`/api/students/filterstudentrecords`,{data},{headers:{authorization: token}})
+            .then((response)=> {
+                // console.log(response);
+                commit('filterListMutate',response.data);
+               
+            })
+            .catch((errors) => {    
+                // alert(errors.response.data.message)
+            }) 
     }
 
 };
@@ -93,6 +109,10 @@ const mutations = {
         console.log(data);
         alert('Edited Succesfully')
         router.push('/table');
+    },
+    filterListMutate:(state,data)=>{
+        console.log(data);
+        state.students = data.records;
     }
 };
 

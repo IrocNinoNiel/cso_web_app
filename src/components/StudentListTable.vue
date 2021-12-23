@@ -16,13 +16,13 @@
                                 <div class="col">
                                     <ul class="">
                                         <li class="list-group-item">
-                                            <input type="radio" name="all" id=""> All
+                                            <input type="radio" id="" v-model="filterRadio" value="all" v-on:change="changeFitler"> All
                                         </li>
                                         <li class="list-group-item">
-                                            <input type="radio" name="student" id=""> Student
+                                            <input type="radio" id="" v-model="filterRadio" value="students" v-on:change="changeFitler"> Student
                                         </li>
                                         <li class="list-group-item">
-                                            <input type="radio" name="unspecified" id=""> Unspecified
+                                            <input type="radio" id="" v-model="filterRadio" value="unspecified" v-on:change="changeFitler"> Unspecified
                                         </li>
                                     </ul>
                                 </div>
@@ -101,12 +101,13 @@ export default {
             countTotalKnownQuery:0,
             countTotalUnknownQuery:0,
             queryStudentList:[],
+            filterRadio:'all',
         }
     },
     components:{StudentQueryTable},
     computed:mapGetters(['allStudent','allQueries','oneStudent']),
     methods: {
-        ...mapActions(['deleteStudent','getOneStudent','getAllQueries','getInquirer']), 
+        ...mapActions(['deleteStudent','getOneStudent','getAllQueries','getInquirer','getFilteredList']), 
         getInfoModal(student){
             this.getAllQueries();
 
@@ -131,6 +132,14 @@ export default {
 
             this.countTotalKnownQuery = this.queryStudentList.filter(e=>e.category.category_name !== 'others').length;
             this.countTotalUnknownQuery = this.queryStudentList.filter(e=>e.category.category_name === 'others').length;
+        },
+        changeFitler(){
+            console.log(this.filterRadio);
+            const data = {
+                filter:this.filterRadio
+            }
+
+            this.getFilteredList(data);
         }
     },
     created(){
