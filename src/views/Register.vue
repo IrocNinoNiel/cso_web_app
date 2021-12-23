@@ -152,6 +152,27 @@
                 this.user.password == "" ? (this.error.password = true, this.hasNoError = false): this.error.password = false;
                 this.user.password2 == "" ? (this.error.password2 = true, this.hasNoError = false): this.error.password2 = false;
                 this.user.employee_id == "" ? (this.error.empId = true, this.hasNoError = false): this.error.empId = false;
+
+                
+                if(!this.validateActInsert(this.user.first_name)){
+                    this.error.first_name = true;
+                    this.hasNoError = false;
+                }
+
+                if(!this.validateActInsert(this.user.last_name)){
+                    this.error.last_name = true;
+                    this.hasNoError = false;
+                }
+
+                if(this.user.phone_num.length !== 11){
+                    this.error.contact = true;
+                    this.hasNoError = false;
+                }
+
+                if(!this.validateActInsertNumber(this.user.phone_num)){
+                    this.error.contact = true;
+                    this.hasNoError = false;
+                }
                 
                
                 if(this.user.password != this.user.password2){
@@ -177,6 +198,21 @@
 
                 }
 
+            },
+            validateActInsert(input) {
+                var specialChars = /[^a-zA-Z ]/g;
+                if (input.match(specialChars)) {
+                    return false;
+                }
+                return (true);
+            },
+
+            validateActInsertNumber(number) {
+                var specialChars = /[^0-9]/g;
+                if (number.match(specialChars)) {
+                    return false;
+                }
+                return (true);
             }
         }
     }
