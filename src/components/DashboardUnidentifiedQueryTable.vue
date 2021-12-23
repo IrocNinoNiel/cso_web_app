@@ -242,7 +242,7 @@ export default {
 <style>
 .my-custom-scrollbar {
     position: relative;
-    height: 1000px;
+    /* height: 1000px; */
     overflow: auto;
 }
 .table-wrapper-scroll-y {

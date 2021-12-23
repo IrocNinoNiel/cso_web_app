@@ -9,14 +9,13 @@
                     <div class="messages-box messageContainerClass">
                         <div class="list-group rounded-0">
                             <div v-for="unidentified in otherpossiblecategory" :key="unidentified._id">
-                                <a class="list-group-item list-group-item-action rounded-0">
+                                <a class="list-group-item list-group-item-action rounded-0" v-if="unidentified.student">
                                     <div class="media">
                                         <div class="media-body ml-4">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                            
                                                 <button type="button" class="btn" data-toggle="modal" data-target="#showModal" @click="unknownFAQButton(unidentified)">
                                                     <h6 class="mb-0">
-                                                        <h6 class="mb-0">{{unidentified.phone_num}}</h6>
+                                                        <h6 class="mb-0">{{unidentified.student.last_name}} {{unidentified.student.first_name}}</h6>
                                                     </h6>
                                                 </button>
                                                 <small class="small font-weight-bold">{{moment(unidentified.createdAt).format("MMM Do")}}</small>

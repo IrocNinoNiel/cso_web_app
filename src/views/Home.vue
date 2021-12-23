@@ -4,7 +4,7 @@
             <div class="col">
                 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Dashboard</h3>
+                        <h3 class="text-dark mb-0">Categorized Student Query</h3>
                     </div>
                     <!-- <div class="row">
                         <div class="col-md-6 col-xl-3 mb-4">
@@ -59,15 +59,29 @@
                                 <QueryListTable/>
                             </div> -->
 
-                            <div class="row mr-2">
-                                <DashboardUnidentifiedChart/>
+                           <div class="row mr-2">
+                                <DashboardUnidentifiedQueryTable/>
                             </div>
-                            <div class="row mr-2">
+                            <hr>
+                            <div class="row mr-2 mt-5">
+                                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                                    <h3 class="text-dark mb-0">Uncategorized Student Query</h3>
+                                </div>
+                                <DashboardUnidentifiedQueryTable/>
+                            </div>
+                            <hr>
+                            <div class="row mr-2 mt-5">
+                                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                                    <h3 class="text-dark mb-0">Unidentified Inquirer Query</h3>
+                                </div>
                                 <DashboardUnidentifiedQueryTable/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="row">
+                                <UnidentifiedQueryList/>
+                            </div>
+                            <div class="row mt-5">
                                 <UnidentifiedQueryList/>
                             </div>
                             <!-- <div class="row mt-2">
