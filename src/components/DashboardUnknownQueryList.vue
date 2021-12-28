@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col mr-2" @click="clickDate(0)">
                                 <button class="btn">
-                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Uncategorized QUERIES</span></div>
+                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Unknown QUERIES</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(2)">
-                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Uncategorized QUERIES This Month</span></div>
+                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Unknown QUERIES This Month</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(3)">
-                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Uncategorized QUERIES This Week</span></div>
+                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Unknown QUERIES This Week</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(4)">
-                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Uncategorized QUERIES this day</span></div>
+                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Unknown QUERIES this day</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -87,9 +87,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="query in selectedCategoryFunction" :key="query._id">
+                    <tr v-for="query in selectedCategoryFunctionUnknown" :key="query._id">
                        <td>
-                           <button type="button" class="btn" data-toggle="modal" data-target="#infoConcern" @click="onClick(query)">{{query.phone_num}}</button>
+                           <button type="button" class="btn" data-toggle="modal" data-target="#infoConcernUnknown" @click="onClick1(query)">{{query.phone_num}}</button>
                        </td>
                         <td>{{query.category.category_name}}</td>
                         <td>{{query.query_name}}</td>
@@ -101,7 +101,7 @@
         </div>
 
         <!-- Details modal -->
-        <div class="modal fade" id="infoConcern" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
+        <div class="modal fade" id="infoConcernUnknown" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
              <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -112,33 +112,33 @@
                     </div>
                     <div class="modal-body">
                         <div class="card">
-                            <div class="card-body" v-if="this.queryInfo != null">
+                            <div class="card-body" v-if="this.queryInfoUnknown != null">
                                 <h4 class="card-title">
-                                    <strong v-if="this.queryInfo.student">{{this.queryInfo.student.first_name}} {{this.queryInfo.student.last_name}}</strong>
+                                    <strong v-if="this.queryInfoUnknown.student">{{this.queryInfoUnknown.student.first_name}} {{this.queryInfoUnknown.student.last_name}}</strong>
                                     <strong v-else>--</strong>
                                 </h4>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>Contact Number:</strong></h6>
-                                <h6 class="card-text">{{this.queryInfo.phone_num}}</h6>
+                                <h6 class="card-text">{{this.queryInfoUnknown.phone_num}}</h6>
                                 <h6 class="text-muted card-subtitle mb-2 mt-2"><strong>MESSAGE:</strong></h6>
-                                <p class="card-text">{{this.queryInfo.query_name}}</p>
+                                <p class="card-text">{{this.queryInfoUnknown.query_name}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>Date:</strong></h6>
-                                <p class="card-text">{{moment(this.queryInfo.createdAt).format("MMM D, YYYY")}}</p>
+                                <p class="card-text">{{moment(this.queryInfoUnknown.createdAt).format("MMM D, YYYY")}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>KEYWORDS IDENTIFIED:</strong></h6>
-                                <p class="card-text">{{this.queryInfo.key_words}}</p>
+                                <p class="card-text">{{this.queryInfoUnknown.key_words}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>POSSIBLE QUERIES:</strong></h6>
-                                <p class="card-text" v-if="this.queryInfo.intent == 0">
+                                <p class="card-text" v-if="this.queryInfoUnknown.intent == 0">
                                     No Possible Queries Found
                                     <br>
                                 </p>
                                 <p class="card-text" v-else>
-                                    {{this.queryInfo.intent}}
+                                    {{this.queryInfoUnknown.intent}}
                                 </p>
-                                <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
+                                <!-- <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
                                 <div v-if="this.queryInfo.intent != 0">
                                     <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Assign to {{intent}}</a>
-                                </div>
+                                </div> -->
                                 <hr>
-                                <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">
+                                <div class="mt-2" v-if="this.queryInfoUnknown.possible_answer == 'N/A'">
                                     <h6 class="text-muted card-subtitle mb-2"><strong>SEND ANSWER:</strong></h6>
                                     <form action="#" class="bg-light"  @submit="sendAnswerQuery">
                                         <div class="input-group">
@@ -154,7 +154,7 @@
                                 </div>
                                 <div v-else>
                                     <h6 class="text-muted card-subtitle mb-2"><strong>MESSAGE REPLY:</strong></h6>
-                                    <p>{{this.queryInfo.possible_answer}}</p>
+                                    <p>{{this.queryInfoUnknown.possible_answer}}</p>
                                 </div>
                             </div>
                         </div>
@@ -169,13 +169,13 @@
 import {mapActions, mapGetters} from 'vuex';
 import Spinner from 'vue-simple-spinner';
 export default {
-    name: 'DashboardUnidentifiedQueryTable',
+    name: 'DashboardUnknownQueryList',
     computed:{
-        ...mapGetters(['allCategories','currentUnidentifedQuery','loadingSMS']),
-        selectedCategoryFunction(){
-            const newList = this.currentUnidentifedQuery.filter(e=>e.student)
-            console.log(newList)
-            return newList;
+        ...mapGetters(['allCategories','currentUnknownQuery','loadingSMS']),
+        selectedCategoryFunctionUnknown(){
+            const newList1 = this.currentUnknownQuery.filter(e=>!e.student)
+            console.log(newList1)
+            return newList1;
         }
     },
     components: {
@@ -185,18 +185,18 @@ export default {
         return{
             selectedCategory: 'all',
             queryList:[],
-            queryInfo:null,
+            queryInfoUnknown:null,
             messageAnswer:''
         }
     },
     methods:{
-        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory','sentMessageAnswerQuery','changeCategoryofQuery']),
+        ...mapActions(['GetCurrentUnknownQuery','getAllCategory','sentMessageAnswerQuery','changeCategoryofQuery']),
         newSelectedCategory(){
             const data = {
                 category_name:this.selectedCategory,
                 date:0
             }
-            this.GetCurrentUnidentifiedQuery(data);
+            this.GetCurrentUnknownQuery(data);
         },
         clickDate(number){
             const data = {
@@ -205,17 +205,17 @@ export default {
             }
             
             console.log(data);
-            this.GetCurrentUnidentifiedQuery(data);
+            this.GetCurrentUnknownQuery(data);
         },
-        onClick(query){
-            this.queryInfo = query;
-            console.log(this.queryInfo);
+        onClick1(query){
+            this.queryInfoUnknown = query;
+            console.log(this.queryInfoUnknown);
         },
         sendAnswerQuery(e){
             e.preventDefault();
             let data = {
                 message:this.messageAnswer,
-                query_info:this.queryInfo
+                query_info:this.queryInfoUnknown
             }
             this.sentMessageAnswerQuery(data);
             // console.log(data);
@@ -235,7 +235,7 @@ export default {
                 category_name:'all',
                 date:0
             }
-        this.GetCurrentUnidentifiedQuery(data);
+        this.GetCurrentUnknownQuery(data);
 
     }
 }

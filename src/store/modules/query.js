@@ -11,6 +11,8 @@ const state = {
     otherpossiblecategory:[],
     unidentifiedQueryByMonth:[],
     currentUnidentifedQuery:[],
+    currentIdentifedQuery:[],
+    currentUnknownQuery:[],
 };
 
 const getters = {
@@ -22,6 +24,8 @@ const getters = {
     otherpossiblecategory:(state)=>state.otherpossiblecategory,
     unidentifiedQueryByMonth:(state)=>state.unidentifiedQueryByMonth,
     currentUnidentifedQuery:(state)=>state.currentUnidentifedQuery,
+    currentIdentifedQuery:(state)=>state.currentIdentifedQuery,
+    currentUnknownQuery:(state)=>state.currentUnknownQuery,
 };
 
 const actions = {
@@ -67,6 +71,18 @@ const actions = {
 
         commit('getCurrentUnidentifiedQueryMutate',response.data.query_list)
     },
+    async GetCurrentIdentifiedQuery({commit},data){
+        const token = VueCookies.get('Token');
+        const response = await axios.post(`/api/query/get-current-query`,{data}, {headers:{Authorization: token}});
+
+        commit('getCurrentIdentifiedQueryMutate',response.data.query_list)
+    },
+    async GetCurrentUnknownQuery({commit},data){
+        const token = VueCookies.get('Token');
+        const response = await axios.post(`/api/query/get-current-query-unknown`,{data}, {headers:{Authorization: token}});
+
+        commit('getCurrentUnknownQueryMutate',response.data.query_list)
+    },
 };
 
 const mutations = {
@@ -92,6 +108,12 @@ const mutations = {
     },
     getCurrentUnidentifiedQueryMutate:(state,data)=>{
         state.currentUnidentifedQuery = data
+    },
+    getCurrentIdentifiedQueryMutate:(state,data)=>{
+        state.currentIdentifedQuery = data
+    },
+    getCurrentUnknownQueryMutate:(state,data)=>{
+        state.currentUnknownQuery = data
     }
 };
 

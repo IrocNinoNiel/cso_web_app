@@ -1,15 +1,15 @@
 <template>
     <div>
         <div class="row ml-2">
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="categoryChoose">Select Category</label>
-                <select class="form-control" v-model="selectedCategory" @change="newSelectedCategory">
+                <select class="form-control" v-model="selectedCategory" @change="newSelectedIdentifiedCategory">
                     <option value="all" selected>All</option>
-                    <option v-for="category in allCategories" :value="category.category_name" :key="category._id">
+                    <option v-for="category in allCategories" :value="category.category_name" :key="category._id"> 
                         {{ category.category_name }}
                     </option>
                 </select>
-            </div> -->
+            </div>
         </div>
          <div class="row">
             <div class="col-6 mb-2">
@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col mr-2" @click="clickDate(0)">
                                 <button class="btn">
-                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Uncategorized QUERIES</span></div>
+                                    <div class="text-uppercase text-primary text-xs mb-1"><span>All Categorized QUERIES</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -33,7 +33,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(2)">
-                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Uncategorized QUERIES This Month</span></div>
+                                    <div class="text-uppercase text-warning text-xs mb-1"><span>All Categorized QUERIES This Month</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(3)">
-                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Uncategorized QUERIES This Week</span></div>
+                                    <div class="text-uppercase text-danger text-xs mb-1"><span>All Categorized QUERIES This Week</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col mr-2">
                                 <button class="btn" @click="clickDate(4)">
-                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Uncategorized QUERIES this day</span></div>
+                                    <div class="text-uppercase text-success text-xs mb-1"><span>All Categorized QUERIES this day</span></div>
                                 </button>
                                 <div class="text-dark font-weight-bold mb-0"><span></span></div>
                             </div>
@@ -79,7 +79,6 @@
                 <thead class="thead-dark">
                     <h1></h1>
                     <tr>
-                      
                         <th>Phone Number</th>
                         <th>Query</th>
                         <th>Concern</th>
@@ -89,7 +88,7 @@
                 <tbody>
                     <tr v-for="query in selectedCategoryFunction" :key="query._id">
                        <td>
-                           <button type="button" class="btn" data-toggle="modal" data-target="#infoConcern" @click="onClick(query)">{{query.phone_num}}</button>
+                           <button type="button" class="btn" data-toggle="modal" data-target="#infoConcernIdentified" @click="onClickIdentified(query)">{{query.phone_num}}</button>
                        </td>
                         <td>{{query.category.category_name}}</td>
                         <td>{{query.query_name}}</td>
@@ -101,7 +100,7 @@
         </div>
 
         <!-- Details modal -->
-        <div class="modal fade" id="infoConcern" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
+        <div class="modal fade" id="infoConcernIdentified" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="edit-modal">
              <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -123,7 +122,7 @@
                                 <p class="card-text">{{this.queryInfo.query_name}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>Date:</strong></h6>
                                 <p class="card-text">{{moment(this.queryInfo.createdAt).format("MMM D, YYYY")}}</p>
-                                <h6 class="text-muted card-subtitle mb-2"><strong>KEYWORDS IDENTIFIED:</strong></h6>
+                                <!-- <h6 class="text-muted card-subtitle mb-2"><strong>KEYWORDS IDENTIFIED:</strong></h6>
                                 <p class="card-text">{{this.queryInfo.key_words}}</p>
                                 <h6 class="text-muted card-subtitle mb-2"><strong>POSSIBLE QUERIES:</strong></h6>
                                 <p class="card-text" v-if="this.queryInfo.intent == 0">
@@ -136,11 +135,11 @@
                                 <h6 class="text-muted card-subtitle mb-2"><strong>ACTIONS:</strong></h6>
                                 <div v-if="this.queryInfo.intent != 0">
                                     <a class="card-link" href="#" v-for="intent in this.queryInfo.intent" :key="intent" @click="changeCategory(queryInfo._id,intent)">Assign to {{intent}}</a>
-                                </div>
+                                </div> -->
                                 <hr>
                                 <div class="mt-2" v-if="this.queryInfo.possible_answer == 'N/A'">
                                     <h6 class="text-muted card-subtitle mb-2"><strong>SEND ANSWER:</strong></h6>
-                                    <form action="#" class="bg-light"  @submit="sendAnswerQuery">
+                                    <form action="#" class="bg-light"  @submit="sendAnswerQueryIdentified">
                                         <div class="input-group">
                                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="messageAnswer" ></textarea>
                                             <div class="input-group-append">
@@ -166,88 +165,86 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
-import Spinner from 'vue-simple-spinner';
-export default {
-    name: 'DashboardUnidentifiedQueryTable',
-    computed:{
-        ...mapGetters(['allCategories','currentUnidentifedQuery','loadingSMS']),
-        selectedCategoryFunction(){
-            const newList = this.currentUnidentifedQuery.filter(e=>e.student)
-            console.log(newList)
-            return newList;
-        }
-    },
-    components: {
+    import {mapActions, mapGetters} from 'vuex';
+    import Spinner from 'vue-simple-spinner';
+    export default {
+        name: 'DashboardIdentifiedQueryTable',
+        computed:{
+            ...mapGetters(['allCategories','currentIdentifedQuery']),
+            selectedCategoryFunction(){
+                const newList = this.currentIdentifedQuery.filter(e=>e.student)
+                console.log(newList)
+                return newList;
+            }
+        },
+        data() {
+            return{
+                selectedCategory: 'all',
+                queryList:[],
+                queryInfo:null,
+                messageAnswer:''
+            }
+        },
+        components: {
             vueSpinner: Spinner
-    },
-    data() {
-        return{
-            selectedCategory: 'all',
-            queryList:[],
-            queryInfo:null,
-            messageAnswer:''
+        },
+        methods:{
+            ...mapActions(['GetCurrentIdentifiedQuery','getAllCategory','sentMessageAnswerQuery','changeCategoryofQuery']),
+            clickDate(number){
+                const data = {
+                    category_name:this.selectedCategory,
+                    date:number
+                }
+                
+                console.log(number);
+                this.GetCurrentIdentifiedQuery(data);
+            },
+            newSelectedIdentifiedCategory(){
+                const data = {
+                    category_name:this.selectedCategory,
+                    date:0
+                }
+                this.GetCurrentIdentifiedQuery(data);
+            },
+            onClickIdentified(query){
+                this.queryInfo = query;
+                console.log(this.queryInfo);
+            },
+            sendAnswerQueryIdentified(e){
+                e.preventDefault();
+                let data = {
+                    message:this.messageAnswer,
+                    query_info:this.queryInfo
+                }
+                // this.sentMessageAnswerQuery(data);
+                console.log(data);
+            },
+            changeCategory(id,intent){
+                const data = {
+                    id,
+                    category_name:intent
+                }
+                this.changeCategoryofQuery(data);
+            },
+        },
+        created(){
+            this.getAllCategory();
+            const data = {
+                    category_name:'all',
+                    date:0
+                }
+            this.GetCurrentIdentifiedQuery(data);
         }
-    },
-    methods:{
-        ...mapActions(['GetCurrentUnidentifiedQuery','getAllCategory','sentMessageAnswerQuery','changeCategoryofQuery']),
-        newSelectedCategory(){
-            const data = {
-                category_name:this.selectedCategory,
-                date:0
-            }
-            this.GetCurrentUnidentifiedQuery(data);
-        },
-        clickDate(number){
-            const data = {
-                category_name:this.selectedCategory,
-                date:number
-            }
-            
-            console.log(data);
-            this.GetCurrentUnidentifiedQuery(data);
-        },
-        onClick(query){
-            this.queryInfo = query;
-            console.log(this.queryInfo);
-        },
-        sendAnswerQuery(e){
-            e.preventDefault();
-            let data = {
-                message:this.messageAnswer,
-                query_info:this.queryInfo
-            }
-            this.sentMessageAnswerQuery(data);
-            // console.log(data);
-        },
-        changeCategory(id,intent){
-            const data = {
-                id,
-                category_name:intent
-            }
-            this.changeCategoryofQuery(data);
-        },
-    },
-    created(){
-
-        this.getAllCategory();
-        const data = {
-                category_name:'all',
-                date:0
-            }
-        this.GetCurrentUnidentifiedQuery(data);
-
     }
-}
 </script>
 
-<style>
-.my-custom-scrollbar {
-    position: relative;
-    /* height: 1000px; */
-    overflow: auto;
-}
-.table-wrapper-scroll-y {
-    display: block;
-}
+<style scoped>
+    .my-custom-scrollbar {
+        position: relative;
+        /* height: 1000px; */
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
 </style>
